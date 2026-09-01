@@ -1,6 +1,11 @@
 {
-  "fetchedAt": "2026-09-01T12:36:25.556Z",
+  "fetchedAt": "2026-09-01T12:37:13.481Z",
   "tryhackme": {},
+  "hackthebox": {
+    "userId": 514589,
+    "error": "HTB user/info 401",
+    "source": "jwt-fallback"
+  },
   "pwncollege": {
     "ranked": true,
     "rank": "17797",
