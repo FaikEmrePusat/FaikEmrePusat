@@ -4,14 +4,14 @@
   <text x="24" y="32" fill="#14212b" font-size="16" font-weight="700">Durum · Model 2.1</text>
   <circle cx="110" cy="130" r="72" fill="none" stroke="#e8eef0" stroke-width="12"/>
   <circle cx="110" cy="130" r="72" fill="none" stroke="#1a6b5c" stroke-width="12" stroke-linecap="round"
-    stroke-dasharray="452.3893421169302" stroke-dashoffset="358.14279396144354" transform="rotate(-90 110 130)"/>
+    stroke-dasharray="452.3893421169302" stroke-dashoffset="358.14438115083186" transform="rotate(-90 110 130)"/>
   <text x="110" y="126" text-anchor="middle" fill="#14212b" font-size="36" font-weight="700">20.8</text>
   <text x="110" y="150" text-anchor="middle" fill="#6a7d8a" font-size="13" font-weight="600">R</text>
   <text x="110" y="174" text-anchor="middle" fill="#3d5a80" font-size="11">Foundation setup</text>
   <text x="220" y="40" fill="#6a7d8a" font-size="12" font-weight="600">T</text>
 <text x="500" y="40" fill="#14212b" font-size="12" text-anchor="end">3.1/5.8</text>
 <rect x="220" y="48" width="280" height="14" rx="7" fill="#e8eef0"/>
-<rect x="220" y="48" width="148.04139218120176" height="14" rx="7" fill="#1a6b5c"/>
+<rect x="220" y="48" width="148.03515941290684" height="14" rx="7" fill="#1a6b5c"/>
 <text x="220" y="92" fill="#6a7d8a" font-size="12" font-weight="600">P</text>
 <text x="500" y="92" fill="#14212b" font-size="12" text-anchor="end">1/6.6</text>
 <rect x="220" y="100" width="280" height="14" rx="7" fill="#e8eef0"/>

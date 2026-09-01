@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-01T13:24:24.342Z",
+  "fetchedAt": "2026-09-01T13:26:01.802Z",
   "tryhackme": {},
   "hackthebox": {
     "userId": 514589,
@@ -14,7 +14,7 @@
   },
   "pwncollege": {
     "ranked": true,
-    "rank": "17798",
+    "rank": "17800",
     "points": 129
   }
 }
