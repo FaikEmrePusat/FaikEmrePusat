@@ -15,12 +15,26 @@
     "enabled": true,
     "username": "FEPusa7",
     "userId": 514589,
-    "profileUrl": "https://app.hackthebox.com/profile/FEPusa7"
+    "profileUrl": "https://app.hackthebox.com/profile/FEPusa7",
+    "statsOverride": {
+      "userOwns": 0,
+      "systemOwns": 0,
+      "rank": "Noob",
+      "ranking": null,
+      "points": 0,
+      "respects": null
+    }
   },
   "pwncollege": {
     "enabled": true,
     "username": "Pusat",
-    "profileUrl": "https://pwn.college/hacker/Pusat"
+    "profileUrl": "https://pwn.college/hacker/Pusat",
+    "statsOverride": {
+      "rank": 17800,
+      "points": 129,
+      "solves": null,
+      "percentile": null
+    }
   },
   "durum": {
     "liveUrl": "https://faikemrepusat.github.io/cyber-security-training/",

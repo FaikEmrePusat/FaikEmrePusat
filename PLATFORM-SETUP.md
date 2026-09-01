@@ -12,13 +12,55 @@ Run manually anytime, or let the **Update profile stats** workflow refresh daily
 
 ## pwn.college
 
-No secret needed. Rank and points come from the public API.
+No secret needed. Rank and points come from the public API. Optional **`statsOverride`** fills in solves or percentile when you want them on the card:
+
+```json
+"pwncollege": {
+  "enabled": true,
+  "username": "Pusat",
+  "profileUrl": "https://pwn.college/hacker/Pusat",
+  "statsOverride": {
+    "rank": 17800,
+    "points": 129,
+    "solves": null,
+    "percentile": null
+  }
+}
+```
+
+API values are merged first; any non-null override field wins.
 
 ## Hack The Box
 
-**Without a token:** the card shows your username and dashes for stats (HTB profile pages are client-rendered and do not expose numbers in HTML).
+**Without a token:** the card shows your username and dashes for stats (HTB profile pages are client-rendered and do not expose numbers in HTML). Use **`statsOverride`** to display progress manually:
 
-**With `HTB_APP_TOKEN` (recommended):** CI pulls owns, rank, tier, and points from the HTB labs API.
+```json
+"hackthebox": {
+  "enabled": true,
+  "username": "FEPusa7",
+  "userId": 514589,
+  "profileUrl": "https://app.hackthebox.com/profile/FEPusa7",
+  "statsOverride": {
+    "userOwns": 0,
+    "systemOwns": 0,
+    "rank": "Noob",
+    "ranking": null,
+    "points": 0,
+    "respects": null
+  }
+}
+```
+
+| Field | Meaning |
+| :--- | :--- |
+| `userOwns` | User-owned machines |
+| `systemOwns` | Root-owned machines |
+| `rank` | Tier name (e.g. Noob, Hacker) |
+| `ranking` | Global leaderboard position |
+| `points` | Total points |
+| `respects` | Respects received (optional) |
+
+**With `HTB_APP_TOKEN` (recommended):** CI pulls owns, rank, tier, and points from the HTB labs API. Override values still win when set.
 
 1. Log in at https://app.hackthebox.com
 2. **Settings → App Token → Create**
@@ -102,6 +144,15 @@ TryHackMe sits behind Vercel bot protection. Datacenter IPs (including GitHub Ac
 4. Push — the SVG card and README table render these values until the API works again.
 
 Update the numbers whenever you want the card to reflect new progress (monthly is fine).
+
+### statsOverride fields (TryHackMe)
+
+| Field | Meaning |
+| :--- | :--- |
+| `rank` | Global rank (number) |
+| `rooms` | Completed rooms |
+| `level` | Level badge (e.g. `[0x9][MAGE]`) |
+| `streak` | Login streak (e.g. `103 days`) |
 
 ### Optional — recent rooms list
 
