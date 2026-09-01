@@ -38,7 +38,7 @@ I am preparing for **Junior SOC Analyst / Incident Responder** positions in Germ
 | Platform | Completed | Global rank | Level / points |
 | :--- | ---: | ---: | :--- |
 | [TryHackMe](https://tryhackme.com/p/FPusat) | — rooms | — | — |
-| [Hack The Box](https://app.hackthebox.com/profile/FEPusa7) | — | — | — |
+| [Hack The Box](https://app.hackthebox.com/profile/FEPusa7) | 0 user · 0 root | — | Noob · 0 pts |
 | [pwn.college](https://pwn.college/hacker/Pusat) | — | #17797 | 129 pts |
 <!-- /AUTO:PLATFORMS -->
 
