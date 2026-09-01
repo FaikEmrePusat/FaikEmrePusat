@@ -28,6 +28,6 @@ Model **2.1** · Updated Sep 1, 2026
 | Language (L) | 2.6 | 7.5 |
 | Career (C) | 2 | 9 |
 
-**R:** 20.9 (Foundation setup) · **Streak:** 0 days · **Last 7 days:** 0 h
+**R:** 20.8 (Foundation setup) · **Streak:** 0 days · **Last 7 days:** 0 h
 
 No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional

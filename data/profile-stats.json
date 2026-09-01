@@ -1,7 +1,7 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 20.9,
+  "R": 20.8,
   "band": "Foundation setup",
   "boyutlar": [
     {
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 56
+      "pi": 55.9
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 56.9
+      "pi": 56.8
     },
     {
       "id": "C",
