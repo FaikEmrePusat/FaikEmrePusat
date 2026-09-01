@@ -4,6 +4,7 @@
     "enabled": true,
     "username": "FPusat",
     "userPublicId": null,
+    "profileHash": null,
     "profileUrl": "https://tryhackme.com/p/FPusat"
   },
   "hackthebox": {

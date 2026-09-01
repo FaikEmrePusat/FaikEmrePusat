@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fetch platform stats + refresh generated markdown snippets for README.
- * Durum SVGs are produced by durum-web/scripts/generate-profile-stats.ts (CI or local).
+ * Secrets (GitHub Actions): HTB_APP_TOKEN, THM_USER_PUBLIC_ID, THM_PROFILE_HASH
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -12,14 +12,23 @@ const ROOT = resolve(__dirname, "..");
 const CONFIG_PATH = resolve(ROOT, "config/platforms.json");
 const GENERATED_DIR = resolve(ROOT, "generated");
 const PROFILE_STATS_PATH = resolve(ROOT, "data/profile-stats.json");
+const THM_BADGE = resolve(ROOT, "assets/thm-badge.png");
 
 function loadConfig() {
   return JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
 }
 
+function saveConfig(config) {
+  writeFileSync(CONFIG_PATH, `${JSON.stringify(config, null, 2)}\n`);
+}
+
 function loadProfileStats() {
   if (!existsSync(PROFILE_STATS_PATH)) return null;
   return JSON.parse(readFileSync(PROFILE_STATS_PATH, "utf8"));
+}
+
+function secret(name) {
+  return process.env[name]?.trim() || null;
 }
 
 async function fetchPwnCollege(username) {
@@ -37,39 +46,72 @@ async function fetchPwnCollege(username) {
   return { ranked: true, rank, points: Number(points) || 0 };
 }
 
-async function fetchThmProfile(username, userPublicId) {
-  if (userPublicId) {
-    const badgeUrl = `https://tryhackme.com/api/v2/badges/public-profile?userPublicId=${userPublicId}`;
-    try {
-      const res = await fetch(badgeUrl, {
-        headers: { "User-Agent": "FaikEmrePusat-profile-stats/1.0" },
-      });
-      const html = await res.text();
-      const rank = html.match(/Rank[^0-9]*(\d[\d,]*)/i)?.[1]?.replace(/,/g, "");
-      const rooms = html.match(/Completed[^0-9]*(\d+)/i)?.[1];
-      const streak = html.match(/Streak[^0-9]*(\d+\s*days?)/i)?.[1];
-      const level = html.match(/Level[^[]*(\[[^\]]+\])/i)?.[1];
-      if (rank || rooms) {
-        return { rank: rank ? Number(rank) : null, rooms: rooms ? Number(rooms) : null, streak, level, source: "badge-api" };
-      }
-    } catch {
-      /* fall through */
-    }
-  }
+async function fetchThmBadgeStats(userPublicId) {
+  const badgeUrl = `https://tryhackme.com/api/v2/badges/public-profile?userPublicId=${userPublicId}`;
+  const res = await fetch(badgeUrl, {
+    headers: { "User-Agent": "FaikEmrePusat-profile-stats/2.0" },
+  });
+  const html = await res.text();
+  if (html.includes("Security Checkpoint") || html.includes("Vercel")) return null;
+  const rank = html.match(/Rank[^0-9]*(\d[\d,]*)/i)?.[1]?.replace(/,/g, "");
+  const rooms = html.match(/Completed[^0-9]*(\d+)/i)?.[1];
+  const streak = html.match(/Streak[^0-9]*(\d+\s*days?)/i)?.[1];
+  const level = html.match(/Level[^[]*(\[[^\]]+\])/i)?.[1];
+  if (!rank && !rooms) return null;
+  return {
+    rank: rank ? Number(rank) : null,
+    rooms: rooms ? Number(rooms) : null,
+    streak,
+    level,
+    source: "badge-api",
+  };
+}
+
+async function fetchThmCompletedRooms(profileHash) {
+  const url = `https://tryhackme.com/api/v2/public-profile/completed-rooms?user=${encodeURIComponent(profileHash)}&limit=8&page=1`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": "FaikEmrePusat-profile-stats/2.0", Accept: "application/json" },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  const total = data?.paginator?.totalDocs ?? data?.rooms?.length ?? null;
+  const recent = (data?.rooms ?? [])
+    .slice(0, 5)
+    .map((r) => r.title || r.roomCode)
+    .filter(Boolean);
+  return { total, recent, source: "completed-rooms-api" };
+}
+
+async function fetchHtbStats(token) {
+  const headers = { Authorization: `Bearer ${token}`, Accept: "application/json" };
+  const infoRes = await fetch("https://www.hackthebox.com/api/v4/user/info", { headers });
+  if (!infoRes.ok) return { error: `HTB API ${infoRes.status}` };
+  const infoJson = await infoRes.json();
+  const info = infoJson?.info ?? infoJson?.profile ?? infoJson;
+
+  let summary = null;
   try {
-    const res = await fetch(`https://tryhackme.com/p/${encodeURIComponent(username)}`, {
-      headers: { "User-Agent": "FaikEmrePusat-profile-stats/1.0" },
-      redirect: "follow",
-    });
-    const html = await res.text();
-    const title = html.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim();
-    if (title && !title.toLowerCase().includes("security checkpoint")) {
-      return { profileTitle: title, source: "profile-page" };
+    const sumRes = await fetch("https://www.hackthebox.com/api/v4/user/profile/summary", { headers });
+    if (sumRes.ok) {
+      const sumJson = await sumRes.json();
+      summary = sumJson?.profile ?? sumJson;
     }
   } catch {
-    /* ignore */
+    /* optional */
   }
-  return { error: "THM verisi alınamadı — userPublicId ekleyin veya profili manuel güncelleyin" };
+
+  const userId = info?.id ?? info?.profile_id ?? null;
+  return {
+    userId,
+    name: info?.name,
+    rank: info?.rank ?? summary?.rank,
+    ranking: info?.ranking ?? summary?.ranking,
+    userOwns: info?.user_owns ?? summary?.user_owns ?? 0,
+    systemOwns: info?.system_owns ?? summary?.system_owns ?? 0,
+    points: info?.points ?? summary?.points,
+    respects: info?.respects,
+    source: "htb-api",
+  };
 }
 
 function platformSection(config, platformStats) {
@@ -77,52 +119,61 @@ function platformSection(config, platformStats) {
   const thm = config.tryhackme;
   const htb = config.hackthebox;
   const pwn = config.pwncollege;
+  const ts = platformStats.tryhackme ?? {};
+  const hs = platformStats.hackthebox ?? {};
+  const ps = platformStats.pwncollege ?? {};
+  const htbUserId = hs.userId ?? htb.userId;
 
   lines.push("## Platform Progress", "");
 
-  const badges = [];
+  const badgeCells = [];
   if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
-    badges.push(
-      `<a href="${thm.profileUrl}"><img src="https://img.shields.io/badge/TryHackMe-${encodeURIComponent(thm.username)}-212C42?style=for-the-badge&logo=tryhackme&logoColor=white" alt="TryHackMe"/></a>`,
-    );
-  }
-  if (htb.enabled && htb.userId) {
-    badges.push(
-      `<a href="${htb.profileUrl}"><img src="https://www.hackthebox.eu/badge/image/${htb.userId}" alt="Hack The Box" height="28"/></a>`,
-    );
-  } else if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
-    badges.push(
-      `<a href="${htb.profileUrl}"><img src="https://img.shields.io/badge/HackTheBox-${encodeURIComponent(htb.username)}-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=111" alt="Hack The Box"/></a>`,
-    );
-  }
-  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
-    badges.push(
-      `<a href="${pwn.profileUrl}"><img src="https://img.shields.io/badge/pwn.college-${encodeURIComponent(pwn.username)}-111?style=for-the-badge" alt="pwn.college"/></a>`,
-    );
-  }
-  if (badges.length) {
-    lines.push("<p align=\"left\">", badges.join("\n"), "</p>", "");
-  }
-
-  const rows = [];
-  const ts = platformStats.tryhackme;
-  if (ts?.rank != null) rows.push(["TryHackMe", "Rank", `#${Number(ts.rank).toLocaleString("en-US")}`]);
-  if (ts?.rooms != null) rows.push(["TryHackMe", "Rooms completed", String(ts.rooms)]);
-  if (ts?.streak) rows.push(["TryHackMe", "Streak", ts.streak]);
-  if (ts?.level) rows.push(["TryHackMe", "Level", ts.level]);
-
-  const ps = platformStats.pwncollege;
-  if (ps?.ranked) {
-    rows.push(["pwn.college", "Rank", `#${ps.rank}`]);
-    rows.push(["pwn.college", "Points", String(ps.points)]);
-  }
-
-  if (rows.length) {
-    lines.push("| Platform | Metric | Value |", "| :--- | :--- | ---: |");
-    for (const [plat, metric, val] of rows) {
-      lines.push(`| ${plat} | ${metric} | ${val} |`);
+    if (existsSync(THM_BADGE)) {
+      badgeCells.push(
+        `<a href="${thm.profileUrl}"><img src="./assets/thm-badge.png" alt="TryHackMe live badge" height="150"/></a>`,
+      );
     }
-    lines.push("");
+  }
+  if (htb.enabled && htbUserId) {
+    badgeCells.push(
+      `<a href="${htb.profileUrl}"><img src="https://www.hackthebox.eu/badge/image/${htbUserId}" alt="Hack The Box live badge" height="150"/></a>`,
+    );
+  }
+  if (badgeCells.length) {
+    lines.push("<p align=\"center\">", badgeCells.join("\n&nbsp;&nbsp;\n"), "</p>", "");
+  }
+
+  lines.push("| Platform | Completed | Global rank | Level / points |", "| :--- | ---: | ---: | :--- |");
+
+  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
+    const completed = ts.rooms ?? ts.total ?? "—";
+    const rank = ts.rank != null ? `#${Number(ts.rank).toLocaleString("en-US")}` : "—";
+    const extra = [ts.level, ts.streak].filter(Boolean).join(" · ") || "—";
+    lines.push(`| [TryHackMe](${thm.profileUrl}) | ${completed} rooms | ${rank} | ${extra} |`);
+  }
+
+  if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
+    const completed =
+      hs.userOwns != null || hs.systemOwns != null
+        ? `${hs.userOwns ?? 0} user · ${hs.systemOwns ?? 0} root`
+        : "—";
+    const rank = hs.ranking != null ? `#${Number(hs.ranking).toLocaleString("en-US")}` : "—";
+    const level = [hs.rank, hs.points != null ? `${hs.points} pts` : null].filter(Boolean).join(" · ") || "—";
+    lines.push(`| [Hack The Box](${htb.profileUrl}) | ${completed} | ${rank} | ${level} |`);
+  }
+
+  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
+    const rank = ps.ranked ? `#${ps.rank}` : "—";
+    const pts = ps.ranked ? `${ps.points} pts` : "—";
+    lines.push(`| [pwn.college](${pwn.profileUrl}) | — | ${rank} | ${pts} |`);
+  }
+
+  lines.push("");
+
+  if (ts.recent?.length) {
+    lines.push("<details><summary><b>Recent TryHackMe rooms</b></summary>", "");
+    for (const title of ts.recent) lines.push(`- ${title}`);
+    lines.push("", "</details>", "");
   }
 
   return lines.join("\n");
@@ -179,18 +230,48 @@ function durumSection(config, profileStats) {
 
 async function main() {
   const config = loadConfig();
+  let configDirty = false;
   const platformStats = { fetchedAt: new Date().toISOString() };
 
+  const thmPublicId = secret("THM_USER_PUBLIC_ID") ?? config.tryhackme?.userPublicId;
+  const thmProfileHash = secret("THM_PROFILE_HASH") ?? config.tryhackme?.profileHash;
+
   if (config.tryhackme?.enabled && config.tryhackme.username && !config.tryhackme.username.startsWith("YOUR_")) {
-    platformStats.tryhackme = await fetchThmProfile(
-      config.tryhackme.username,
-      config.tryhackme.userPublicId,
-    );
+    if (thmPublicId) {
+      platformStats.tryhackme = (await fetchThmBadgeStats(thmPublicId)) ?? {};
+      if (!config.tryhackme.userPublicId && thmPublicId) {
+        config.tryhackme.userPublicId = Number(thmPublicId) || thmPublicId;
+        configDirty = true;
+      }
+    } else {
+      platformStats.tryhackme = {};
+    }
+    if (thmProfileHash) {
+      const rooms = await fetchThmCompletedRooms(thmProfileHash);
+      if (rooms) {
+        platformStats.tryhackme = { ...platformStats.tryhackme, ...rooms };
+        if (!config.tryhackme.profileHash) {
+          config.tryhackme.profileHash = thmProfileHash;
+          configDirty = true;
+        }
+      }
+    }
+  }
+
+  const htbToken = secret("HTB_APP_TOKEN");
+  if (config.hackthebox?.enabled && htbToken) {
+    platformStats.hackthebox = await fetchHtbStats(htbToken);
+    if (platformStats.hackthebox?.userId && !config.hackthebox.userId) {
+      config.hackthebox.userId = platformStats.hackthebox.userId;
+      configDirty = true;
+    }
   }
 
   if (config.pwncollege?.enabled && config.pwncollege.username && !config.pwncollege.username.startsWith("YOUR_")) {
     platformStats.pwncollege = await fetchPwnCollege(config.pwncollege.username);
   }
+
+  if (configDirty) saveConfig(config);
 
   const profileStats = loadProfileStats();
   mkdirSync(GENERATED_DIR, { recursive: true });
