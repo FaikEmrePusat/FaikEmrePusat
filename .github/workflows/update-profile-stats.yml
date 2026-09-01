@@ -1,0 +1,65 @@
+name: Update profile stats
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
+
+      - name: Checkout durum-web
+        uses: actions/checkout@v4
+        with:
+          repository: FaikEmrePusat/cyber-security-training
+          path: durum-web-src
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: durum-web-src/durum-web/package-lock.json
+
+      - name: Install durum-web deps
+        working-directory: durum-web-src/durum-web
+        run: npm ci
+
+      - name: Generate durum SVGs from backup
+        working-directory: durum-web-src/durum-web
+        run: |
+          INPUT="../../data/durum-backup.json"
+          OUT="../../profile-out"
+          if [ ! -f "$INPUT" ]; then
+            npx tsx scripts/generate-profile-stats.ts --seed --output "$OUT"
+          else
+            npx tsx scripts/generate-profile-stats.ts --input "$INPUT" --output "$OUT"
+          fi
+          cp "$OUT/assets/"*.svg ../../assets/
+          cp "$OUT/profile-stats.json" ../../data/profile-stats.json
+          rm -rf "$OUT"
+
+      - name: Fetch platform stats
+        run: node scripts/update-profile-stats.mjs
+
+      - name: Patch README sections
+        run: node scripts/patch-readme.mjs
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/ data/ generated/ README.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update profile platform and durum stats"
+            git push
+          fi

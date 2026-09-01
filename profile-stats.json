@@ -1,0 +1,141 @@
+{
+  "exportedAt": "2026-09-01T00:07:20.109Z",
+  "model": "2.1",
+  "R": 21,
+  "band": "Foundation setup",
+  "boyutlar": [
+    {
+      "key": "T",
+      "ad": "Technical",
+      "v": 3.1,
+      "hedef": 5.8
+    },
+    {
+      "key": "P",
+      "ad": "Production",
+      "v": 1,
+      "hedef": 6.6
+    },
+    {
+      "key": "L",
+      "ad": "Language",
+      "v": 2.6,
+      "hedef": 7.5
+    },
+    {
+      "key": "C",
+      "ad": "Career",
+      "v": 2,
+      "hedef": 9
+    }
+  ],
+  "skills": [
+    {
+      "id": "net",
+      "kisa": "Net",
+      "v": 4.1
+    },
+    {
+      "id": "linux",
+      "kisa": "Linux",
+      "v": 3.3
+    },
+    {
+      "id": "win",
+      "kisa": "Win/AD",
+      "v": 2.4
+    },
+    {
+      "id": "secfund",
+      "kisa": "SecFund",
+      "v": 4.1
+    },
+    {
+      "id": "crypto",
+      "kisa": "Crypto",
+      "v": 4.1
+    },
+    {
+      "id": "netsec",
+      "kisa": "NetSec",
+      "v": 4.1
+    },
+    {
+      "id": "siem",
+      "kisa": "SIEM",
+      "v": 2.4
+    },
+    {
+      "id": "def",
+      "kisa": "Def/SOC",
+      "v": 2.4
+    },
+    {
+      "id": "off",
+      "kisa": "Off",
+      "v": 1.6
+    },
+    {
+      "id": "py",
+      "kisa": "Python",
+      "v": 4.1
+    },
+    {
+      "id": "cloud",
+      "kisa": "Cloud",
+      "v": 1.6
+    },
+    {
+      "id": "port",
+      "kisa": "Portfolio",
+      "v": 0
+    }
+  ],
+  "gates": [
+    {
+      "id": "0",
+      "name": "Gate 0 — Legal prerequisite",
+      "open": false,
+      "pi": 25
+    },
+    {
+      "id": "A",
+      "name": "Gate A — Foundation baseline",
+      "open": false,
+      "pi": 57
+    },
+    {
+      "id": "B",
+      "name": "Gate B — Defensive practice",
+      "open": false,
+      "pi": 57.9
+    },
+    {
+      "id": "C",
+      "name": "Gate C — Evidence",
+      "open": false,
+      "pi": 0
+    },
+    {
+      "id": "D",
+      "name": "Gate D — Application threshold",
+      "open": false,
+      "pi": 25.1
+    },
+    {
+      "id": "E",
+      "name": "Gate E — Intensive interviews",
+      "open": false,
+      "pi": 12.5
+    },
+    {
+      "id": "F",
+      "name": "Gate F — Finances (Route B)",
+      "open": false,
+      "pi": 0
+    }
+  ],
+  "gateOzet": "No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional",
+  "streak": 0,
+  "saat7": 0
+}

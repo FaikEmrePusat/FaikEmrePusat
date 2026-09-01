@@ -1,0 +1,24 @@
+{
+  "$schema": "./platforms.schema.json",
+  "tryhackme": {
+    "enabled": true,
+    "username": "FPusat",
+    "userPublicId": null,
+    "profileUrl": "https://tryhackme.com/p/FPusat"
+  },
+  "hackthebox": {
+    "enabled": true,
+    "username": "FEPusa7",
+    "userId": null,
+    "profileUrl": "https://app.hackthebox.com/profile/FEPusa7"
+  },
+  "pwncollege": {
+    "enabled": true,
+    "username": "Pusat",
+    "profileUrl": "https://pwn.college/hacker/Pusat"
+  },
+  "durum": {
+    "liveUrl": "https://faikemrepusat.github.io/cyber-security-training/",
+    "repoUrl": "https://github.com/FaikEmrePusat/cyber-security-training"
+  }
+}

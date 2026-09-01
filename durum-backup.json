@@ -1,0 +1,342 @@
+{
+  "version": "durum-v22",
+  "exportedAt": "2026-09-01T00:07:20.109Z",
+  "state": {
+    "skills": [
+      {
+        "id": "net",
+        "name": "Networking",
+        "kisa": "Net",
+        "weight": 1.2,
+        "neden": "Every SOC analysis depends on reading packets/protocols",
+        "claimed": 6,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "linux",
+        "name": "Linux",
+        "kisa": "Linux",
+        "weight": 1.3,
+        "neden": "SOC tool chain and log analysis run on Linux",
+        "claimed": 4,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "win",
+        "name": "Windows/AD",
+        "kisa": "Win/AD",
+        "weight": 1.4,
+        "neden": "Most enterprise environments use AD; incidents originate there",
+        "claimed": 3,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "secfund",
+        "name": "Security Fundamentals",
+        "kisa": "SecFund",
+        "weight": 1,
+        "neden": "Baseline — threat model, CIA, attack surface",
+        "claimed": 7,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "crypto",
+        "name": "Crypto",
+        "kisa": "Crypto",
+        "weight": 0.6,
+        "neden": "Necessary but early depth is not junior priority",
+        "claimed": 7,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "netsec",
+        "name": "Network Security",
+        "kisa": "NetSec",
+        "weight": 0.9,
+        "neden": "FW / IDS / proxy — daily SOC concepts",
+        "claimed": 7,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "siem",
+        "name": "SIEM kavram",
+        "kisa": "SIEM",
+        "weight": 1.1,
+        "neden": "Gate B prerequisite; core tool of target role",
+        "claimed": 3,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "def",
+        "name": "Defensive/SOC",
+        "kisa": "Def/SOC",
+        "weight": 1.5,
+        "neden": "The target role itself",
+        "claimed": 3,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "off",
+        "name": "Offensive",
+        "kisa": "Off",
+        "weight": 0.7,
+        "neden": "Feeds defense; secondary at junior level",
+        "claimed": 2,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "py",
+        "name": "Python",
+        "kisa": "Python",
+        "weight": 0.8,
+        "neden": "Automation / log parsing",
+        "claimed": 5,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "cloud",
+        "name": "Cloud",
+        "kisa": "Cloud",
+        "weight": 0.4,
+        "neden": "Secondary in junior SOC job posts",
+        "claimed": 2,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "port",
+        "name": "Portfolio",
+        "kisa": "Portfolio",
+        "weight": 1.4,
+        "neden": "Employability — common job posting requirement",
+        "claimed": 2,
+        "evidence": "yok",
+        "ref": ""
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "a1",
+        "ad": "Lab write-up (no public link yet)",
+        "tur": "writeup",
+        "sahiplik": 1,
+        "evidence": "yok",
+        "ref": ""
+      },
+      {
+        "id": "a2",
+        "ad": "Completed lab scenario (no public link yet)",
+        "tur": "lab-egzersizi",
+        "sahiplik": 1,
+        "evidence": "yok",
+        "ref": ""
+      }
+    ],
+    "lang": {
+      "deKonusma": 1,
+      "deGenel": 1.5,
+      "enKonusma": 4,
+      "enGenel": 5,
+      "deEv": "yok",
+      "enEv": "yok",
+      "deRef": "",
+      "enRef": ""
+    },
+    "career": [
+      {
+        "id": "cv",
+        "label": "CV ready",
+        "max": 2,
+        "claimed": 1,
+        "evidence": "yok",
+        "ref": "",
+        "saatPuan": 5
+      },
+      {
+        "id": "ag",
+        "label": "Network (LinkedIn + references)",
+        "max": 2,
+        "claimed": 0,
+        "evidence": "yok",
+        "ref": "",
+        "saatPuan": 4
+      },
+      {
+        "id": "staj",
+        "label": "Internship documented",
+        "max": 2,
+        "claimed": 1,
+        "evidence": "yok",
+        "ref": "",
+        "saatPuan": 4
+      },
+      {
+        "id": "funnel",
+        "label": "Application funnel active",
+        "max": 2,
+        "claimed": 0,
+        "evidence": "yok",
+        "ref": "",
+        "saatPuan": 6
+      },
+      {
+        "id": "mulakat",
+        "label": "Interview practice",
+        "max": 2,
+        "claimed": 0,
+        "evidence": "yok",
+        "ref": "",
+        "saatPuan": 8
+      }
+    ],
+    "tempo": {
+      "hoursCyber": 28,
+      "hoursLang": 7,
+      "hoursLangAlt": 14,
+      "quality": 0.85
+    },
+    "retrieval": [
+      {
+        "id": "r1",
+        "topic": "DNS query/response (Wireshark)",
+        "alan": "net",
+        "difficulty": "orta",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r2",
+        "topic": "TCP 3-way handshake",
+        "alan": "net",
+        "difficulty": "kolay",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r3",
+        "topic": "Linux process / permissions",
+        "alan": "linux",
+        "difficulty": "orta",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r4",
+        "topic": "CIA triad + threat model",
+        "alan": "secfund",
+        "difficulty": "kolay",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r5",
+        "topic": "Symmetric vs asymmetric crypto",
+        "alan": "crypto",
+        "difficulty": "orta",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r6",
+        "topic": "Windows event log basics",
+        "alan": "win",
+        "difficulty": "zor",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r7",
+        "topic": "Python socket / log parse",
+        "alan": "py",
+        "difficulty": "orta",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      },
+      {
+        "id": "r8",
+        "topic": "SOC triage thought chain",
+        "alan": "def",
+        "difficulty": "zor",
+        "n": 0,
+        "stability": 3,
+        "ef": 2.5,
+        "lastIso": "2026-08-27T12:00:00+03:00"
+      }
+    ],
+    "history": [
+      {
+        "t": "2026-08-27T12:00:00+03:00",
+        "type": "meta",
+        "seed": true,
+        "not": "Schema 1.0 · model 2.0. This row is seed data; contains no measured progress."
+      },
+      {
+        "t": "2026-08-27T12:00:00+03:00",
+        "type": "snapshot",
+        "kaynak": "diagnostic-seed",
+        "seed": true,
+        "hesap": {
+          "T": 3.63,
+          "P": 0.95,
+          "L": 3.35,
+          "C": 2,
+          "R": 26.62,
+          "R_beyan": 31.68,
+          "kanit_acigi": 5.06
+        },
+        "v_tahmin": 1.84,
+        "v_olculen": null,
+        "kappa": null,
+        "not": "SEED — single measurement point. v_measured requires at least 2 snapshots."
+      }
+    ],
+    "pending": [],
+    "chancenkarte": {
+      "yas": 30,
+      "birikim": "",
+      "aylikTasarruf": "",
+      "gate0": "bilinmiyor",
+      "anerkennungDurum": "anabin_kontrol",
+      "engpassberuf": false,
+      "meslekiEgitimYil": 2,
+      "lebensunterhalt": false
+    },
+    "draft": {
+      "alan": "net",
+      "dakika": "60",
+      "mod": "lab",
+      "kalite": "0.9",
+      "kanit": "",
+      "not": "",
+      "aktivite": "lab-pratik",
+      "aktiviteCustom": "",
+      "kaynak": "oak"
+    },
+    "scheduleCarry": [],
+    "scheduleCompletedToday": {}
+  }
+}
