@@ -5,10 +5,10 @@
     "username": "FPusat",
     "profileUrl": "https://tryhackme.com/p/FPusat",
     "statsOverride": {
-      "rank": null,
-      "rooms": null,
-      "level": null,
-      "streak": null
+      "rank": 136140,
+      "rooms": 85,
+      "level": "[0x9][MAGE]",
+      "streak": "103 days"
     }
   },
   "hackthebox": {
