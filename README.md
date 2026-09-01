@@ -1,51 +1,109 @@
 <div align="center">
 
-# 👋 Merhaba, Ben Faik Emre Pusat
+# 👋 Hello, I'm Faik Emre Pusat
 
 ### 🛡️ Aspiring Junior SOC Analyst / Blue Team Specialist
-*Almanya Junior SOC & Defensive Security Kariyer Yolu · Formül ve Veri Güdümlü Yetkinlik Takibi*
+*Germany Junior SOC & Defensive Security Career Path · Formula and Data-Driven Competency Tracking*
 
-[![Live Dashboard](https://img.shields.io/badge/Canlı_Durum_Paneli-1a6b5c?style=for-the-badge&logo=google-chrome&logoColor=white)](https://faikemrepusat.github.io/cyber-security-training/)
-[![GitHub Repo](https://img.shields.io/badge/Kaynak_Kod-14212b?style=for-the-badge&logo=github&logoColor=white)](https://github.com/FaikEmrePusat/cyber-security-training)
+[![Live Dashboard](https://img.shields.io/badge/Live_Status_Dashboard-1a6b5c?style=for-the-badge&logo=google-chrome&logoColor=white)](https://faikemrepusat.github.io/cyber-security-training/)
+[![GitHub Repo](https://img.shields.io/badge/Source_Code-14212b?style=for-the-badge&logo=github&logoColor=white)](https://github.com/FaikEmrePusat/cyber-security-training)
 
 </div>
 
 ---
 
-## 🎯 Hedef ve Odak Alanı
-Almanya siber güvenlik ekosisteminde **Junior SOC Analyst / Incident Responder** pozisyonlarına hazırlanıyorum. Klasik takvim ezberi yerine; **ölçülebilir yetkinlik (R skoru)**, **FSRS aralıklı tekrar algoritması** ve **somut lab kanıtları** üzerine kurulu Model 2.1 sistemini uyguluyorum.
+## 🎯 Goals and Focus Area
+I am preparing for **Junior SOC Analyst / Incident Responder** positions in Germany's cybersecurity ecosystem. Instead of a traditional calendar-based cramming approach, I apply the Model 2.1 system built on **measurable competency (R score)**, the **FSRS spaced repetition algorithm**, and **concrete lab evidence**.
 
 ---
 
-## 🛠️ Teknik Yetkinlikler ve Araç Seti
+## 🛠️ Technical Skills and Toolset
 
-| Alan | Araçlar & Teknolojiler |
+| Area | Tools & Technologies |
 | :--- | :--- |
 | **Defensive & SOC** | ![EDR](https://img.shields.io/badge/EDR-Sophos%20%2F%20Defender-blue?style=flat-square) ![SIEM](https://img.shields.io/badge/SIEM-Splunk%20%2F%20Wazuh-orange?style=flat-square) ![Sysmon](https://img.shields.io/badge/Logging-Sysmon%20%2F%20WinEvent-success?style=flat-square) ![Wireshark](https://img.shields.io/badge/PCAP-Wireshark-1679A7?style=flat-square&logo=wireshark&logoColor=white) |
-| **Sistem & Sunucu** | ![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%2F%20Debian-FCC624?style=flat-square&logo=linux&logoColor=black) ![Windows Server](https://img.shields.io/badge/Windows_Server-Active_Directory%20%2F%20GPO-0078D6?style=flat-square&logo=windows&logoColor=white) |
-| **Ağ Güvenliği** | ![Network](https://img.shields.io/badge/Network-TCP%2FIP%20%2F%20OSI%20%2F%20DNS-blue?style=flat-square) ![Firewall](https://img.shields.io/badge/Firewall-FortiGate%20%2F%20NGFW-red?style=flat-square) |
-| **Diller & Betik** | ![Python](https://img.shields.io/badge/Python-Scripting%20%2F%20Automation-3776AB?style=flat-square&logo=python&logoColor=white) ![Bash](https://img.shields.io/badge/Bash-Shell_Scripting-4EAA25?style=flat-square&logo=gnubash&logoColor=white) |
+| **Systems & Server** | ![Linux](https://img.shields.io/badge/Linux-Ubuntu%20%2F%20Debian-FCC624?style=flat-square&logo=linux&logoColor=black) ![Windows Server](https://img.shields.io/badge/Windows_Server-Active_Directory%20%2F%20GPO-0078D6?style=flat-square&logo=windows&logoColor=white) |
+| **Network Security** | ![Network](https://img.shields.io/badge/Network-TCP%2FIP%20%2F%20OSI%20%2F%20DNS-blue?style=flat-square) ![Firewall](https://img.shields.io/badge/Firewall-FortiGate%20%2F%20NGFW-red?style=flat-square) |
+| **Languages & Scripting** | ![Python](https://img.shields.io/badge/Python-Scripting%20%2F%20Automation-3776AB?style=flat-square&logo=python&logoColor=white) ![Bash](https://img.shields.io/badge/Bash-Shell_Scripting-4EAA25?style=flat-square&logo=gnubash&logoColor=white) |
 
 ---
 
-## 📊 Geliştirdiğim Sistem: Durum-Web (Model 2.1)
-Geliştirdiğim ve günlük olarak kullandığım açık kaynaklı siber güvenlik yetkinlik takip sistemi:
+<!-- AUTO:PLATFORMS -->
+## 🏴 Siber Platform İlerlemesi
 
-- 🧠 **FSRS Aralıklı Tekrar:** Unutma eğrisine göre optimize edilmiş hafıza kararlılık motoru.
-- 📐 **Geometrik Hazırlık Skoru ($R$):** Teknik ($T$), Üretim/Lab ($P$), Dil ($L$) ve Kariyer ($C$) bileşenlerinin kanıt tavanlı geometrik ortalaması.
-- 🚦 **Kapı Hattı (Gate Pipeline 0-F):** Hukuki denklik, teknik lab derinliği, public proje kanıtı ve iş başvurusu kapı gereksinimleri.
-- 🔄 **A/B Günü Ritmi:** Bilişsel yükü dengeleyen Konu Derinleşme ve Kapsamlı SOC Lab döngüsü.
+> Platform kullanıcı adlarını `config/platforms.json` dosyasında güncelleyin. İstatistikler günlük GitHub Action ile yenilenir.
 
-👉 **[Canlı Durum Panelini İncele](https://faikemrepusat.github.io/cyber-security-training/)**
+### TryHackMe
+<!-- THM: config/platforms.json → tryhackme.enabled=true ve username doldurun -->
+[![TryHackMe](https://img.shields.io/badge/TryHackMe-yapılandırılmadı-6a7d8a?style=flat-square&logo=tryhackme)](https://tryhackme.com/)
+
+### Hack The Box
+<!-- HTB: config/platforms.json → hackthebox.enabled=true, username ve userId -->
+[![HackTheBox](https://img.shields.io/badge/HackTheBox-yapılandırılmadı-6a7d8a?style=flat-square&logo=hackthebox)](https://www.hackthebox.com/)
+
+### pwn.college
+<!-- pwn: config/platforms.json → pwncollege.enabled=true ve username -->
+[![pwn.college](https://img.shields.io/badge/pwn.college-yapılandırılmadı-6a7d8a?style=flat-square)](https://pwn.college/)
+<!-- /AUTO:PLATFORMS -->
 
 ---
 
-## 🌐 Dil & İletişim
-- 🇩🇪 **Almanca:** B1/B2 Hedefli Çalışma (Junior Blue Team iletişim seviyesi)
-- 🇬🇧 **İngilizce:** Teknik & Mesleki Akıcılık (Dokümantasyon & Global İletişim)
+<!-- AUTO:DURUM -->
+## 📈 Durum Paneli İstatistikleri
+
+Model **2.1** · Son güncelleme: 01.09.2026
+
+👉 **[Canlı panel](https://faikemrepusat.github.io/cyber-security-training/)** · [Kaynak kod](https://github.com/FaikEmrePusat/cyber-security-training)
+
+<details open><summary><b>Grafikler</b> (SVG — README için statik, panel canlı)</summary>
+
+<p align="center">
+
+<img src="./assets/durum-summary.svg" alt="Durum R skoru ve boyutlar" width="520"/>
+
+</p>
+
+<p align="center">
+
+<img src="./assets/durum-skills.svg" alt="Beceri özeti" width="520"/>
+
+<img src="./assets/durum-gates.svg" alt="Kapı hattı" width="520"/>
+
+</p>
+</details>
+
+| Boyut | Skor | Hedef |
+| :--- | ---: | ---: |
+| Teknik (T) | 3.1 | 5.8 |
+| Üretim (P) | 1 | 6.6 |
+| Dil (L) | 2.6 | 7.5 |
+| Kariyer (C) | 2 | 9 |
+
+**R:** 21 (Foundation setup) · **Seri:** 0 gün · **Son 7 gün:** 0 sa
+
+Kapılar: No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional
+<!-- /AUTO:DURUM -->
+
+---
+
+## 📊 System I Built: Durum-Web (Model 2.1)
+The open-source cybersecurity competency tracking system I developed and use daily:
+
+- 🧠 **FSRS Spaced Repetition:** Memory stability engine optimized for the forgetting curve.
+- 📐 **Geometric Readiness Score ($R$):** Evidence-capped geometric mean of Technical ($T$), Production/Lab ($P$), Language ($L$), and Career ($C$) components.
+- 🚦 **Gate Pipeline (0-F):** Legal equivalence, technical lab depth, public project evidence, and job application gate requirements.
+- 🔄 **A/B Day Rhythm:** Topic Deepening and Comprehensive SOC Lab cycle that balances cognitive load.
+
+👉 **[Explore Live Status Dashboard](https://faikemrepusat.github.io/cyber-security-training/)**
+
+---
+
+## 🌐 Languages & Communication
+- 🇩🇪 **German:** B1/B2 Targeted Study (Junior Blue Team communication level)
+- 🇬🇧 **English:** Technical & Professional Fluency (Documentation & Global Communication)
 
 ---
 
 <div align="center">
-  <i>"Veri ile ölçülmeyen ilerleme sadece bir tahmindir."</i>
+  <i>"Progress not measured by data is merely a guess."</i>
 </div>
