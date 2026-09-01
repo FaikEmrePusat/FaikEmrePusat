@@ -10,10 +10,12 @@ Shows **live HTB badge**, user/root owns, rank, and points.
 2. **Settings → App Token → Create**
 3. Copy the token
 4. GitHub → **FaikEmrePusat/FaikEmrePusat** → **Settings → Secrets → Actions**
-5. New secret: `HTB_APP_TOKEN` = paste token
+5. New secret: `HTB_APP_TOKEN` = paste token (never commit tokens to the repo)
 6. **Actions → Update profile stats → Run workflow**
 
-Your numeric `userId` is saved automatically after the first run.
+Your numeric `userId` is saved automatically after the first run (or set in `config/platforms.json` — it is public).
+
+**If a token was exposed** (e.g. pasted in chat), revoke it in HTB **Settings → App Token**, create a new one, and update the `HTB_APP_TOKEN` GitHub secret.
 
 ## TryHackMe (optional, for live badge + room count)
 

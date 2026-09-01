@@ -1,9 +1,6 @@
 {
-  "fetchedAt": "2026-09-01T12:21:57.424Z",
+  "fetchedAt": "2026-09-01T12:36:25.556Z",
   "tryhackme": {},
-  "hackthebox": {
-    "error": "HTB API 404"
-  },
   "pwncollege": {
     "ranked": true,
     "rank": "17797",

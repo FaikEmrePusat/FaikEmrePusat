@@ -82,35 +82,75 @@ async function fetchThmCompletedRooms(profileHash) {
   return { total, recent, source: "completed-rooms-api" };
 }
 
+const HTB_API = "https://labs.hackthebox.com/api/v4";
+
+function decodeJwtUserId(token) {
+  try {
+    const payloadB64 = token.split(".")[1];
+    if (!payloadB64) return null;
+    const payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf8"));
+    const sub = payload?.sub;
+    if (sub == null) return null;
+    const n = Number(sub);
+    return Number.isFinite(n) ? n : sub;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchHtbStats(token) {
   const headers = { Authorization: `Bearer ${token}`, Accept: "application/json" };
-  const infoRes = await fetch("https://www.hackthebox.com/api/v4/user/info", { headers });
-  if (!infoRes.ok) return { error: `HTB API ${infoRes.status}` };
-  const infoJson = await infoRes.json();
-  const info = infoJson?.info ?? infoJson?.profile ?? infoJson;
+  const jwtUserId = decodeJwtUserId(token);
+  let info = null;
+  let apiError = null;
 
-  let summary = null;
   try {
-    const sumRes = await fetch("https://www.hackthebox.com/api/v4/user/profile/summary", { headers });
-    if (sumRes.ok) {
-      const sumJson = await sumRes.json();
-      summary = sumJson?.profile ?? sumJson;
+    const infoRes = await fetch(`${HTB_API}/user/info`, { headers });
+    if (infoRes.ok) {
+      const infoJson = await infoRes.json();
+      info = infoJson?.info ?? infoJson?.profile ?? infoJson;
+    } else {
+      apiError = `HTB user/info ${infoRes.status}`;
     }
-  } catch {
-    /* optional */
+  } catch (err) {
+    apiError = err instanceof Error ? err.message : "HTB user/info failed";
   }
 
-  const userId = info?.id ?? info?.profile_id ?? null;
+  const userId = info?.id ?? info?.profile_id ?? jwtUserId;
+
+  let basic = null;
+  if (userId) {
+    try {
+      const basicRes = await fetch(`${HTB_API}/user/profile/basic/${userId}`, { headers });
+      if (basicRes.ok) {
+        const basicJson = await basicRes.json();
+        basic = basicJson?.profile ?? basicJson;
+      } else if (!apiError) {
+        apiError = `HTB profile/basic ${basicRes.status}`;
+      }
+    } catch {
+      /* optional */
+    }
+  }
+
+  if (!info && !basic) {
+    if (jwtUserId) {
+      return { userId: jwtUserId, error: apiError ?? "HTB API unavailable", source: "jwt-fallback" };
+    }
+    return { error: apiError ?? "HTB API unavailable" };
+  }
+
   return {
     userId,
-    name: info?.name,
-    rank: info?.rank ?? summary?.rank,
-    ranking: info?.ranking ?? summary?.ranking,
-    userOwns: info?.user_owns ?? summary?.user_owns ?? 0,
-    systemOwns: info?.system_owns ?? summary?.system_owns ?? 0,
-    points: info?.points ?? summary?.points,
-    respects: info?.respects,
-    source: "htb-api",
+    name: info?.name ?? basic?.name,
+    rank: info?.rank ?? basic?.rank,
+    ranking: info?.ranking ?? basic?.ranking,
+    userOwns: info?.user_owns ?? basic?.user_owns ?? 0,
+    systemOwns: info?.system_owns ?? basic?.system_owns ?? 0,
+    points: info?.points ?? basic?.points,
+    respects: info?.respects ?? basic?.respects,
+    source: info ? "htb-api" : "htb-profile-basic",
+    ...(apiError && !info ? { warning: apiError } : {}),
   };
 }
 

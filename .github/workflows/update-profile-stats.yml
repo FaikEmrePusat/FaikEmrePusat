@@ -77,5 +77,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update profile platform and durum stats"
+            git pull --rebase origin main
             git push
           fi
