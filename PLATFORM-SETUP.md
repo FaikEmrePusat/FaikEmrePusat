@@ -32,6 +32,28 @@ Your numeric `userId` is saved automatically after the first successful run (or 
 
 ## TryHackMe
 
+### Why we do not use `p4p1/tryhackme-badge-workflow`
+
+[p4p1/tryhackme-badge-workflow](https://github.com/p4p1/tryhackme-badge-workflow) is a third-party GitHub Action that downloads TryHackMe's official badge PNG and commits it to your repo. We reviewed it in September 2026 and **kept our custom SVG approach** instead.
+
+| Aspect | p4p1 workflow | This repo (`update-profile-stats.mjs`) |
+| :--- | :--- | :--- |
+| **Default mode** | Static PNG from `tryhackme-badges.s3.amazonaws.com/{username}.png` | Custom SVG card with rank, rooms, level |
+| **Username only?** | Yes for static mode — **but** the S3 file must already exist | Yes — username-based APIs + HTML scrape |
+| **`userPublicId`?** | Only if `use_static_image: false` (dynamic/Puppeteer mode) | Optional; not required for the card |
+| **Works for `FPusat`?** | **No** — S3 returns `403 Access Denied` (no badge file on THM's bucket) | Yes — card renders; use `statsOverride` when CI is blocked |
+| **Maintenance** | Author archived the project (README: "moving away from tryhackme") | Maintained in this repo |
+| **Multi-platform** | TryHackMe only | THM + HTB + pwn.college in one workflow |
+
+**How p4p1 works (two modes):**
+
+1. **Static (default, `use_static_image: true`)** — fetches `https://tryhackme-badges.s3.amazonaws.com/FPusat.png`. No `userPublicId` needed, but THM must have generated and uploaded that PNG. Tested 2026-09-01: `FPusat.png` → 403; `p4p1.png` (author) → 200. Most new users have no S3 badge unless they triggered regeneration on tryhackme.com (see [issue #4](https://github.com/p4p1/tryhackme-badge-workflow/issues/4)).
+2. **Dynamic (`use_static_image: false`)** — fetches `https://tryhackme.com/api/v2/badges/public-profile?userPublicId=…`, renders HTML with Puppeteer, saves PNG. **Requires `user_public_id`**, which is not shown in the current TryHackMe UI.
+
+**Bottom line:** For username `FPusat` without `userPublicId`, the p4p1 action fails in both practical paths (no S3 file; dynamic mode needs the missing ID). Our SVG cards plus optional `statsOverride` are simpler and match the rest of the profile design.
+
+---
+
 **Only your username is required.** Set it in `config/platforms.json`:
 
 ```json
