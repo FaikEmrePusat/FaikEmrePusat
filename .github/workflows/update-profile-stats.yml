@@ -46,18 +46,6 @@ jobs:
           cp "$OUT/profile-stats.json" ../../data/profile-stats.json
           rm -rf "$OUT"
 
-      - name: Capture TryHackMe live badge
-        env:
-          THM_USER_PUBLIC_ID: ${{ secrets.THM_USER_PUBLIC_ID }}
-        run: |
-          if [ -n "$THM_USER_PUBLIC_ID" ]; then
-            npm install --no-save playwright@1.49.1
-            npx playwright install chromium --with-deps
-            node scripts/capture-thm-badge.mjs
-          else
-            echo "THM_USER_PUBLIC_ID not set — skip badge capture"
-          fi
-
       - name: Fetch platform stats
         env:
           HTB_APP_TOKEN: ${{ secrets.HTB_APP_TOKEN }}

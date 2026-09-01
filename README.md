@@ -31,18 +31,21 @@ I am preparing for **Junior SOC Analyst / Incident Responder** positions in Germ
 <!-- AUTO:PLATFORMS -->
 ## Platform Progress
 
-*Live lab badges — stats refresh daily.*
+*Custom lab cards — stats refresh daily via static scrape.*
 
 <p align="center">
-<a href="https://app.hackthebox.com/profile/FEPusa7"><img src="https://www.hackthebox.eu/badge/image/514589" alt="Hack The Box live badge" height="150"/></a>
+<a href="https://tryhackme.com/p/FPusat"><img src="./assets/platform-thm.svg" alt="TryHackMe stats" height="150"/></a>
 &nbsp;&nbsp;
-<a href="https://pwn.college/hacker/Pusat"><img src="./assets/pwn-badge.svg" alt="pwn.college stats" height="130"/></a>
+<a href="https://app.hackthebox.com/profile/FEPusa7"><img src="./assets/platform-htb.svg" alt="Hack The Box stats" height="150"/></a>
+&nbsp;&nbsp;
+<a href="https://pwn.college/hacker/Pusat"><img src="./assets/platform-pwn.svg" alt="pwn.college stats" height="150"/></a>
 </p>
 
 | Platform | Completed | Global rank | Level / points |
 | :--- | ---: | ---: | :--- |
-| [Hack The Box](https://app.hackthebox.com/profile/FEPusa7) | 0 user · 0 root | — | Noob · 0 pts |
-| [pwn.college](https://pwn.college/hacker/Pusat) | — | #17800 | 129 pts |
+| [TryHackMe](https://tryhackme.com/p/FPusat) | — rooms | — | — |
+| [Hack The Box](https://app.hackthebox.com/profile/FEPusa7) | — | — | — |
+| [pwn.college](https://pwn.college/hacker/Pusat) | — | #17,800 | 129 pts |
 <!-- /AUTO:PLATFORMS -->
 
 ---

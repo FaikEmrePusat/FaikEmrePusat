@@ -1,20 +1,17 @@
 {
-  "fetchedAt": "2026-09-01T13:26:01.802Z",
-  "tryhackme": {},
+  "fetchedAt": "2026-09-01T13:35:28.798Z",
+  "tryhackme": {
+    "blocked": true,
+    "source": "scrape-blocked"
+  },
   "hackthebox": {
     "userId": 514589,
-    "name": "FEPusa7",
-    "rank": "Noob",
-    "ranking": null,
-    "userOwns": 0,
-    "systemOwns": 0,
-    "points": 0,
-    "respects": 0,
-    "source": "htb-api"
+    "source": "config-only"
   },
   "pwncollege": {
     "ranked": true,
     "rank": "17800",
-    "points": 129
+    "points": 129,
+    "source": "api"
   }
 }

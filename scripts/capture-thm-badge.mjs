@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Screenshot TryHackMe live badge → assets/thm-badge.png (requires THM_USER_PUBLIC_ID). */
+/** @deprecated Use update-profile-stats.mjs (custom SVG cards). Kept for manual fallback only. */
 import { existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
