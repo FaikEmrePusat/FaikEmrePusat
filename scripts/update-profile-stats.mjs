@@ -13,6 +13,8 @@ const CONFIG_PATH = resolve(ROOT, "config/platforms.json");
 const GENERATED_DIR = resolve(ROOT, "generated");
 const PROFILE_STATS_PATH = resolve(ROOT, "data/profile-stats.json");
 const THM_BADGE = resolve(ROOT, "assets/thm-badge.png");
+const PWN_BADGE = resolve(ROOT, "assets/pwn-badge.svg");
+const ASSETS_DIR = resolve(ROOT, "assets");
 
 function loadConfig() {
   return JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
@@ -154,11 +156,25 @@ async function fetchHtbStats(token) {
   };
 }
 
-function shieldBadge({ label, message, color, logo, url }) {
-  const enc = (s) => encodeURIComponent(s).replace(/%20/g, "%20");
-  const logoPart = logo ? `&logo=${logo}${logo === "hackthebox" ? "&logoColor=black" : "&logoColor=white"}` : "";
-  const src = `https://img.shields.io/badge/${enc(label)}-${enc(message)}-${color}?style=for-the-badge${logoPart}`;
-  return `<a href="${url}"><img src="${src}" alt="${label} profile"/></a>`;
+function writePwnBadgeSvg(username, stats) {
+  const rank = stats.ranked ? `#${Number(stats.rank).toLocaleString("en-US")}` : "—";
+  const pts = stats.ranked ? `${stats.points} pts` : "—";
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="130" viewBox="0 0 340 130" role="img" aria-label="pwn.college ${username}: rank ${rank}, ${pts}">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2d1b69"/>
+      <stop offset="100%" stop-color="#1a1033"/>
+    </linearGradient>
+  </defs>
+  <rect width="340" height="130" rx="14" fill="url(#bg)"/>
+  <text x="22" y="38" fill="#c4b5fd" font-family="Segoe UI, system-ui, sans-serif" font-size="15" font-weight="600">pwn.college</text>
+  <text x="22" y="78" fill="#ffffff" font-family="Segoe UI, system-ui, sans-serif" font-size="26" font-weight="700">${username}</text>
+  <text x="22" y="108" fill="#ddd6fe" font-family="Segoe UI, system-ui, sans-serif" font-size="14">Global rank ${rank} · ${pts}</text>
+</svg>
+`;
+  mkdirSync(ASSETS_DIR, { recursive: true });
+  writeFileSync(PWN_BADGE, svg);
 }
 
 function platformSection(config, platformStats) {
@@ -173,43 +189,7 @@ function platformSection(config, platformStats) {
   const thmHasStats = ts.rooms != null || ts.total != null || ts.rank != null || ts.level;
 
   lines.push("## Platform Progress", "");
-
-  const shieldCells = [];
-  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
-    shieldCells.push(
-      shieldBadge({
-        label: "TryHackMe",
-        message: thm.username,
-        color: "212C42",
-        logo: "tryhackme",
-        url: thm.profileUrl,
-      }),
-    );
-  }
-  if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
-    shieldCells.push(
-      shieldBadge({
-        label: "Hack The Box",
-        message: htb.username,
-        color: "9FEF00",
-        logo: "hackthebox",
-        url: htb.profileUrl,
-      }),
-    );
-  }
-  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
-    shieldCells.push(
-      shieldBadge({
-        label: "pwn.college",
-        message: pwn.username,
-        color: "5c2d91",
-        url: pwn.profileUrl,
-      }),
-    );
-  }
-  if (shieldCells.length) {
-    lines.push("<p align=\"center\">", shieldCells.join("\n&nbsp;&nbsp;\n"), "</p>", "");
-  }
+  lines.push("*Live lab badges — stats refresh daily.*", "");
 
   const liveBadges = [];
   if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_") && existsSync(THM_BADGE)) {
@@ -220,6 +200,11 @@ function platformSection(config, platformStats) {
   if (htb.enabled && htbUserId) {
     liveBadges.push(
       `<a href="${htb.profileUrl}"><img src="https://www.hackthebox.eu/badge/image/${htbUserId}" alt="Hack The Box live badge" height="150"/></a>`,
+    );
+  }
+  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_") && existsSync(PWN_BADGE)) {
+    liveBadges.push(
+      `<a href="${pwn.profileUrl}"><img src="./assets/pwn-badge.svg" alt="pwn.college stats" height="130"/></a>`,
     );
   }
   if (liveBadges.length) {
@@ -352,6 +337,9 @@ async function main() {
 
   if (config.pwncollege?.enabled && config.pwncollege.username && !config.pwncollege.username.startsWith("YOUR_")) {
     platformStats.pwncollege = await fetchPwnCollege(config.pwncollege.username);
+    if (platformStats.pwncollege && !platformStats.pwncollege.error) {
+      writePwnBadgeSvg(config.pwncollege.username, platformStats.pwncollege);
+    }
   }
 
   if (configDirty) saveConfig(config);

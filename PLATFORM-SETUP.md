@@ -17,30 +17,27 @@ Your numeric `userId` is saved automatically after the first run (or set in `con
 
 **If a token was exposed** (e.g. pasted in chat), revoke it in HTB **Settings → App Token**, create a new one, and update the `HTB_APP_TOKEN` GitHub secret.
 
-## TryHackMe
+## TryHackMe (live badge graphic — one secret)
 
-**Default:** A Shields.io profile button is generated automatically (no secret required).
+TryHackMe has no public badge URL like HTB. CI captures a **PNG screenshot** of the official live badge (rank, streak, rooms, level).
 
-### Optional — live stats (room count, rank, badge PNG)
+### Get your `userPublicId` (one-time)
 
-### Option A — profile hash (completed rooms + recent activity)
+1. Log in at https://tryhackme.com
+2. Open your profile (https://tryhackme.com/p/FPusat)
+3. Click **Share profile** / **Embed badge** on the profile page
+4. Copy the iframe embed code — it contains `userPublicId=1234567`
+5. GitHub secret: **`THM_USER_PUBLIC_ID`** = that number
 
-1. Log in at https://tryhackme.com and open your profile
-2. Press **F12** → **Network** tab → refresh page
-3. Filter by `completed-rooms`
-4. Copy the `user=` value from the URL (24-character hash)
-5. GitHub secret: `THM_PROFILE_HASH` = that hash
+**Alternative:** F12 → Network → refresh profile → filter `public-profile` or `userPublicId`
 
-### Option B — live badge image (rank, streak, rooms on badge PNG)
+### Optional — room list in stats table
 
-1. Same Network tab on your profile — look for `userPublicId=` in any request, **or** embed/badge iframe URL
-2. GitHub secret: `THM_USER_PUBLIC_ID` = the number
-
-With `THM_USER_PUBLIC_ID` set, CI captures `./assets/thm-badge.png` via Playwright.
+GitHub secret: **`THM_PROFILE_HASH`** (24-char hash from `completed-rooms?user=` in Network tab)
 
 ## pwn.college
 
-No secret needed — rank and points update from your username automatically.
+No secret needed. CI generates `./assets/pwn-badge.svg` (rank + points graphic) from the public API.
 
 ## After adding secrets
 
