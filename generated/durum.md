@@ -1,33 +1,33 @@
-## 📈 Durum Paneli İstatistikleri
+## Durum Dashboard
 
-Model **2.1** · Son güncelleme: 01.09.2026
+Model **2.1** · Updated Sep 1, 2026
 
-👉 **[Canlı panel](https://faikemrepusat.github.io/cyber-security-training/)** · [Kaynak kod](https://github.com/FaikEmrePusat/cyber-security-training)
+[Live dashboard](https://faikemrepusat.github.io/cyber-security-training/) · [Source code](https://github.com/FaikEmrePusat/cyber-security-training)
 
-<details open><summary><b>Grafikler</b> (SVG — README için statik, panel canlı)</summary>
+<details open><summary><b>Charts</b></summary>
 
 <p align="center">
 
-<img src="./assets/durum-summary.svg" alt="Durum R skoru ve boyutlar" width="520"/>
+<img src="./assets/durum-summary.svg" alt="R score and dimensions" width="520"/>
 
 </p>
 
 <p align="center">
 
-<img src="./assets/durum-skills.svg" alt="Beceri özeti" width="520"/>
+<img src="./assets/durum-skills.svg" alt="Skills" width="520"/>
 
-<img src="./assets/durum-gates.svg" alt="Kapı hattı" width="520"/>
+<img src="./assets/durum-gates.svg" alt="Gate pipeline" width="520"/>
 
 </p>
 </details>
 
-| Boyut | Skor | Hedef |
+| Dimension | Score | Target |
 | :--- | ---: | ---: |
-| Teknik (T) | 3.1 | 5.8 |
-| Üretim (P) | 1 | 6.6 |
-| Dil (L) | 2.6 | 7.5 |
-| Kariyer (C) | 2 | 9 |
+| Technical (T) | 3.1 | 5.8 |
+| Production (P) | 1 | 6.6 |
+| Language (L) | 2.6 | 7.5 |
+| Career (C) | 2 | 9 |
 
-**R:** 21 (Foundation setup) · **Seri:** 0 gün · **Son 7 gün:** 0 sa
+**R:** 21 (Foundation setup) · **Streak:** 0 days · **Last 7 days:** 0 h
 
-Kapılar: No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional
+No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional

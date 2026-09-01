@@ -78,88 +78,100 @@ function platformSection(config, platformStats) {
   const htb = config.hackthebox;
   const pwn = config.pwncollege;
 
-  lines.push("## 🏴 Siber Platform İlerlemesi", "");
-  lines.push("> Platform kullanıcı adlarını `config/platforms.json` dosyasında güncelleyin. İstatistikler günlük GitHub Action ile yenilenir.", "");
+  lines.push("## Platform Progress", "");
 
-  // TryHackMe
-  lines.push("### TryHackMe");
+  const badges = [];
   if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
-    lines.push(`[![TryHackMe](https://img.shields.io/badge/TryHackMe-${encodeURIComponent(thm.username)}-212C42?style=for-the-badge&logo=tryhackme&logoColor=white)](${thm.profileUrl})`, "");
-    const s = platformStats.tryhackme;
-    if (s?.rank != null || s?.rooms != null) {
-      lines.push("| Metrik | Değer |", "| :--- | ---: |");
-      if (s.rank != null) lines.push(`| Sıra | #${s.rank.toLocaleString("tr-TR")} |`);
-      if (s.rooms != null) lines.push(`| Tamamlanan oda | ${s.rooms} |`);
-      if (s.streak) lines.push(`| Seri | ${s.streak} |`);
-      if (s.level) lines.push(`| Seviye | ${s.level} |`);
-      lines.push("");
-    } else if (s?.profileTitle) {
-      lines.push(`Profil: **${s.profileTitle}** · [Profili aç](${thm.profileUrl})`, "");
-    } else {
-      lines.push(`[Profili aç](${thm.profileUrl}) · THM rozet API'si için \`userPublicId\` ekleyin (TryHackMe profil embed kodundan).`, "");
-    }
-  } else {
-    lines.push("<!-- THM: config/platforms.json → tryhackme.enabled=true ve username doldurun -->");
-    lines.push("[![TryHackMe](https://img.shields.io/badge/TryHackMe-yapılandırılmadı-6a7d8a?style=flat-square&logo=tryhackme)](https://tryhackme.com/)", "");
+    badges.push(
+      `<a href="${thm.profileUrl}"><img src="https://img.shields.io/badge/TryHackMe-${encodeURIComponent(thm.username)}-212C42?style=for-the-badge&logo=tryhackme&logoColor=white" alt="TryHackMe"/></a>`,
+    );
   }
-
-  // Hack The Box
-  lines.push("### Hack The Box");
   if (htb.enabled && htb.userId) {
-    const badge = `https://www.hackthebox.eu/badge/image/${htb.userId}`;
-    lines.push(`<a href="${htb.profileUrl}"><img src="${badge}" alt="Hack The Box" height="120"/></a>`, "");
-    lines.push(`Profil: [@${htb.username}](${htb.profileUrl}) · Rozet HTB sunucularından canlı güncellenir.`, "");
+    badges.push(
+      `<a href="${htb.profileUrl}"><img src="https://www.hackthebox.eu/badge/image/${htb.userId}" alt="Hack The Box" height="28"/></a>`,
+    );
   } else if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
-    lines.push(`[![HackTheBox](https://img.shields.io/badge/HackTheBox-${encodeURIComponent(htb.username)}-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=111)](${htb.profileUrl})`, "");
-    lines.push("HTB rozet görseli için profil ayarlarından **user ID** alıp `config/platforms.json` → `hackthebox.userId` alanına yazın.", "");
-  } else {
-    lines.push("<!-- HTB: config/platforms.json → hackthebox.enabled=true, username ve userId -->");
-    lines.push("[![HackTheBox](https://img.shields.io/badge/HackTheBox-yapılandırılmadı-6a7d8a?style=flat-square&logo=hackthebox)](https://www.hackthebox.com/)", "");
+    badges.push(
+      `<a href="${htb.profileUrl}"><img src="https://img.shields.io/badge/HackTheBox-${encodeURIComponent(htb.username)}-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=111" alt="Hack The Box"/></a>`,
+    );
+  }
+  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
+    badges.push(
+      `<a href="${pwn.profileUrl}"><img src="https://img.shields.io/badge/pwn.college-${encodeURIComponent(pwn.username)}-111?style=for-the-badge" alt="pwn.college"/></a>`,
+    );
+  }
+  if (badges.length) {
+    lines.push("<p align=\"left\">", badges.join("\n"), "</p>", "");
   }
 
-  // pwn.college
-  lines.push("### pwn.college");
-  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
-    lines.push(`[![pwn.college](https://img.shields.io/badge/pwn.college-${encodeURIComponent(pwn.username)}-111?style=for-the-badge)](${pwn.profileUrl})`, "");
-    const s = platformStats.pwncollege;
-    if (s?.ranked) {
-      lines.push("| Metrik | Değer |", "| :--- | ---: |", `| Sıra | #${s.rank} |`, `| Puan | ${s.points} |`, "");
-    } else if (s?.error) {
-      lines.push(`_${s.error}_ · [Profili aç](${pwn.profileUrl})`, "");
-    } else {
-      lines.push(`Henüz sıralamada değil · [Profili aç](${pwn.profileUrl})`, "");
+  const rows = [];
+  const ts = platformStats.tryhackme;
+  if (ts?.rank != null) rows.push(["TryHackMe", "Rank", `#${Number(ts.rank).toLocaleString("en-US")}`]);
+  if (ts?.rooms != null) rows.push(["TryHackMe", "Rooms completed", String(ts.rooms)]);
+  if (ts?.streak) rows.push(["TryHackMe", "Streak", ts.streak]);
+  if (ts?.level) rows.push(["TryHackMe", "Level", ts.level]);
+
+  const ps = platformStats.pwncollege;
+  if (ps?.ranked) {
+    rows.push(["pwn.college", "Rank", `#${ps.rank}`]);
+    rows.push(["pwn.college", "Points", String(ps.points)]);
+  }
+
+  if (rows.length) {
+    lines.push("| Platform | Metric | Value |", "| :--- | :--- | ---: |");
+    for (const [plat, metric, val] of rows) {
+      lines.push(`| ${plat} | ${metric} | ${val} |`);
     }
-  } else {
-    lines.push("<!-- pwn: config/platforms.json → pwncollege.enabled=true ve username -->");
-    lines.push("[![pwn.college](https://img.shields.io/badge/pwn.college-yapılandırılmadı-6a7d8a?style=flat-square)](https://pwn.college/)", "");
+    lines.push("");
   }
 
   return lines.join("\n");
 }
 
+const DIM_EN = {
+  Teknik: "Technical",
+  Üretim: "Production",
+  Dil: "Language",
+  Kariyer: "Career",
+  Technical: "Technical",
+  Production: "Production",
+  Language: "Language",
+  Career: "Career",
+};
+
 function durumSection(config, profileStats) {
   const lines = [];
-  lines.push("## 📈 Durum Paneli İstatistikleri", "");
-  lines.push(`Model **${profileStats?.model ?? "2.1"}** · Son güncelleme: ${profileStats?.exportedAt ? new Date(profileStats.exportedAt).toLocaleDateString("tr-TR") : "—"}`, "");
-  lines.push(`👉 **[Canlı panel](${config.durum.liveUrl})** · [Kaynak kod](${config.durum.repoUrl})`, "");
-  lines.push("<details open><summary><b>Grafikler</b> (SVG — README için statik, panel canlı)</summary>", "");
+  lines.push("## Durum Dashboard", "");
+  const updated = profileStats?.exportedAt
+    ? new Date(profileStats.exportedAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "—";
+  lines.push(`Model **${profileStats?.model ?? "2.1"}** · Updated ${updated}`, "");
+  lines.push(`[Live dashboard](${config.durum.liveUrl}) · [Source code](${config.durum.repoUrl})`, "");
+  lines.push("<details open><summary><b>Charts</b></summary>", "");
   lines.push('<p align="center">', "");
-  lines.push('<img src="./assets/durum-summary.svg" alt="Durum R skoru ve boyutlar" width="520"/>', "");
+  lines.push('<img src="./assets/durum-summary.svg" alt="R score and dimensions" width="520"/>', "");
   lines.push("</p>", "");
   lines.push('<p align="center">', "");
-  lines.push('<img src="./assets/durum-skills.svg" alt="Beceri özeti" width="520"/>', "");
-  lines.push('<img src="./assets/durum-gates.svg" alt="Kapı hattı" width="520"/>', "");
+  lines.push('<img src="./assets/durum-skills.svg" alt="Skills" width="520"/>', "");
+  lines.push('<img src="./assets/durum-gates.svg" alt="Gate pipeline" width="520"/>', "");
   lines.push("</p>", "</details>", "");
 
   if (profileStats) {
-    lines.push("| Boyut | Skor | Hedef |", "| :--- | ---: | ---: |");
+    lines.push("| Dimension | Score | Target |", "| :--- | ---: | ---: |");
     for (const b of profileStats.boyutlar ?? []) {
-      lines.push(`| ${b.ad} (${b.key}) | ${b.v} | ${b.hedef} |`);
+      const label = DIM_EN[b.ad] ?? b.ad;
+      lines.push(`| ${label} (${b.key}) | ${b.v} | ${b.hedef} |`);
     }
-    lines.push("", `**R:** ${profileStats.R} (${profileStats.band}) · **Seri:** ${profileStats.streak} gün · **Son 7 gün:** ${profileStats.saat7} sa`, "");
-    if (profileStats.gateOzet) lines.push(`Kapılar: ${profileStats.gateOzet}`, "");
-  } else {
-    lines.push("_Durum verisi yok — `data/durum-backup.json` dışa aktarın veya CI çalıştırın._", "");
+    lines.push(
+      "",
+      `**R:** ${profileStats.R} (${profileStats.band}) · **Streak:** ${profileStats.streak} days · **Last 7 days:** ${profileStats.saat7} h`,
+      "",
+    );
+    if (profileStats.gateOzet) lines.push(`${profileStats.gateOzet}`, "");
   }
 
   return lines.join("\n");

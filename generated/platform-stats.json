@@ -1,11 +1,11 @@
 {
-  "fetchedAt": "2026-09-01T00:31:12.643Z",
+  "fetchedAt": "2026-09-01T11:18:26.067Z",
   "tryhackme": {
     "error": "THM verisi alınamadı — userPublicId ekleyin veya profili manuel güncelleyin"
   },
   "pwncollege": {
     "ranked": true,
-    "rank": "17766",
+    "rank": "17795",
     "points": 129
   }
 }
