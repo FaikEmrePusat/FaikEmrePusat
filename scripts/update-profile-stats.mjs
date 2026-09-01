@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Fetch platform stats via static scrape + public APIs, render custom SVG cards.
- * Optional secrets: HTB_APP_TOKEN, THM_USER_PUBLIC_ID, THM_PROFILE_HASH
+ * TryHackMe uses username-only endpoints; optional statsOverride in config/platforms.json.
+ * Optional secrets: HTB_APP_TOKEN, THM_PROFILE_HASH
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -53,6 +54,79 @@ function fmtRank(n) {
   return Number.isFinite(num) ? `#${num.toLocaleString("en-US")}` : "—";
 }
 
+function isThmBlocked(res, body = "") {
+  return (
+    res?.status === 429 ||
+    body.includes("Security Checkpoint") ||
+    body.includes("verifying your browser") ||
+    body.includes("Vercel")
+  );
+}
+
+function formatThmLevel(level) {
+  if (level == null || level === "") return null;
+  if (typeof level === "string") return level;
+  const n = Number(level);
+  if (!Number.isFinite(n)) return String(level);
+  return `[0x${n.toString(16).toUpperCase()}]`;
+}
+
+function hasThmDisplayStats(stats) {
+  return (
+    stats?.rank != null ||
+    stats?.rooms != null ||
+    stats?.total != null ||
+    stats?.level ||
+    stats?.streak
+  );
+}
+
+function mergeThmStats(...parts) {
+  const out = {};
+  let blocked = false;
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.blocked) blocked = true;
+    for (const key of [
+      "rank",
+      "rooms",
+      "total",
+      "streak",
+      "level",
+      "badges",
+      "points",
+      "recent",
+      "userPublicId",
+      "topPercentage",
+    ]) {
+      if (part[key] != null && part[key] !== "") out[key] = part[key];
+    }
+    if (part.source) out.source = part.source;
+  }
+  if (hasThmDisplayStats(out)) {
+    delete out.blocked;
+  } else if (blocked) {
+    out.blocked = true;
+  }
+  return out;
+}
+
+function applyThmStatsOverride(stats, override) {
+  if (!override || typeof override !== "object") return stats;
+  const out = { ...stats };
+  for (const key of ["rank", "rooms", "level", "streak"]) {
+    const value = override[key];
+    if (value != null && value !== "") out[key] = value;
+  }
+  if (hasThmDisplayStats(out)) {
+    delete out.blocked;
+    if (override && Object.values(override).some((v) => v != null && v !== "")) {
+      out.source = stats?.source ? `${stats.source}+override` : "statsOverride";
+    }
+  }
+  return out;
+}
+
 function writePlatformCard({ id, platform, username, accent, gradient, rows, outPath }) {
   const cols = Math.max(rows.length, 1);
   const colW = (CARD_W - 44) / cols;
@@ -84,9 +158,9 @@ function writePlatformCard({ id, platform, username, accent, gradient, rows, out
 }
 
 function writeThmCard(username, stats) {
-  const blocked = stats?.blocked;
-  const rows = blocked
-    ? [{ label: "Status", value: "Scrape blocked" }]
+  const hasStats = hasThmDisplayStats(stats);
+  const rows = !hasStats && stats?.blocked
+    ? [{ label: "Status", value: "API blocked — set statsOverride" }]
     : [
         { label: "Global rank", value: fmtRank(stats?.rank) },
         { label: "Rooms", value: stats?.rooms ?? stats?.total ?? "—" },
@@ -150,14 +224,97 @@ function writePwnCard(username, stats) {
   });
 }
 
-async function scrapeThmProfile(username) {
-  const url = `https://tryhackme.com/p/${encodeURIComponent(username)}`;
-  const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "text/html" } });
-  const html = await res.text();
-  if (html.includes("Security Checkpoint") || res.status === 429) {
-    return { blocked: true, source: "scrape-blocked" };
+async function fetchThmPublicProfileApi(username) {
+  const url = `https://tryhackme.com/api/v2/public-profile?username=${encodeURIComponent(username)}`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": UA, Accept: "application/json" },
+  });
+  const body = await res.text();
+  if (isThmBlocked(res, body)) return { blocked: true, source: "public-profile-api-blocked" };
+  if (!res.ok) return null;
+
+  try {
+    const json = JSON.parse(body);
+    const data = json?.data;
+    if (!data) return null;
+    return {
+      rank: data.rank ?? null,
+      rooms: data.completedRoomsNumber ?? null,
+      level: formatThmLevel(data.level),
+      badges: data.badgesNumber ?? null,
+      points: data.totalPoints ?? null,
+      topPercentage: data.topPercentage ?? null,
+      userPublicId: data.userPublicId ?? data.publicId ?? null,
+      source: "public-profile-api",
+    };
+  } catch {
+    return null;
   }
-  if (!res.ok) return { error: `HTTP ${res.status}`, source: "scrape" };
+}
+
+async function fetchThmLegacyStats(username) {
+  const enc = encodeURIComponent(username);
+  const headers = { "User-Agent": UA, Accept: "application/json" };
+  const stats = {};
+  let blocked = false;
+
+  try {
+    const rankRes = await fetch(`https://tryhackme.com/api/user/rank/${enc}`, { headers });
+    const rankBody = await rankRes.text();
+    if (isThmBlocked(rankRes, rankBody)) blocked = true;
+    else if (rankRes.ok) {
+      const json = JSON.parse(rankBody);
+      if (json.userRank != null) stats.rank = Number(json.userRank);
+    }
+  } catch {
+    /* optional */
+  }
+
+  try {
+    const roomsRes = await fetch(`https://tryhackme.com/api/no-completed-rooms-public/${enc}`, {
+      headers,
+    });
+    const roomsBody = await roomsRes.text();
+    if (isThmBlocked(roomsRes, roomsBody)) blocked = true;
+    else if (roomsRes.ok) {
+      const rooms = Number(roomsBody.trim());
+      if (Number.isFinite(rooms)) stats.rooms = rooms;
+    }
+  } catch {
+    /* optional */
+  }
+
+  if (Object.keys(stats).length) return { ...stats, source: "legacy-api" };
+  if (blocked) return { blocked: true, source: "legacy-api-blocked" };
+  return null;
+}
+
+function parseThmProfileHtml(html) {
+  const nextMatch = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (nextMatch) {
+    try {
+      const next = JSON.parse(nextMatch[1]);
+      const props = next?.props?.pageProps ?? {};
+      const profile = props.profile ?? props.user ?? props.publicProfile ?? props;
+      const rank = profile.rank ?? profile.userRank;
+      const rooms = profile.completedRoomsNumber ?? profile.completedRooms ?? profile.roomsCompleted;
+      const level = profile.level;
+      const streak = profile.streak;
+      const userPublicId = profile.userPublicId ?? profile.publicId;
+      if (rank != null || rooms != null || level != null) {
+        return {
+          rank: rank != null ? Number(rank) : null,
+          rooms: rooms != null ? Number(rooms) : null,
+          streak: streak != null ? String(streak) : null,
+          level: formatThmLevel(level),
+          userPublicId: userPublicId != null ? Number(userPublicId) : null,
+          source: "next-data",
+        };
+      }
+    } catch {
+      /* fall through to regex */
+    }
+  }
 
   const rank = html.match(/Rank[^0-9]*(\d[\d,]*)/i)?.[1]?.replace(/,/g, "");
   const rooms = html.match(/Completed[^0-9]*(\d+)/i)?.[1];
@@ -174,6 +331,15 @@ async function scrapeThmProfile(username) {
     userPublicId: userPublicId ? Number(userPublicId) : null,
     source: "scrape",
   };
+}
+
+async function scrapeThmProfile(username) {
+  const url = `https://tryhackme.com/p/${encodeURIComponent(username)}`;
+  const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "text/html" } });
+  const html = await res.text();
+  if (isThmBlocked(res, html)) return { blocked: true, source: "scrape-blocked" };
+  if (!res.ok) return { error: `HTTP ${res.status}`, source: "scrape" };
+  return parseThmProfileHtml(html);
 }
 
 async function scrapeHtbProfile(username) {
@@ -446,39 +612,33 @@ async function main() {
   const platformStats = { fetchedAt: new Date().toISOString() };
 
   if (config.tryhackme?.enabled && config.tryhackme.username && !config.tryhackme.username.startsWith("YOUR_")) {
-    let thm = (await scrapeThmProfile(config.tryhackme.username)) ?? {};
-    if (thm?.userPublicId && !config.tryhackme.userPublicId) {
-      config.tryhackme.userPublicId = thm.userPublicId;
-      configDirty = true;
-    }
+    const username = config.tryhackme.username;
+    let thm = mergeThmStats(
+      await fetchThmPublicProfileApi(username),
+      await fetchThmLegacyStats(username),
+      await scrapeThmProfile(username),
+    );
 
-    const thmPublicId = secret("THM_USER_PUBLIC_ID") ?? config.tryhackme?.userPublicId;
-    const thmProfileHash = secret("THM_PROFILE_HASH") ?? config.tryhackme?.profileHash;
-
+    const thmPublicId = secret("THM_USER_PUBLIC_ID") ?? config.tryhackme?.userPublicId ?? thm.userPublicId;
     if (thmPublicId) {
       const badge = await fetchThmBadgeStats(thmPublicId);
-      if (badge) {
-        thm = { ...thm, ...badge };
-        if (!config.tryhackme.userPublicId) {
-          config.tryhackme.userPublicId = Number(thmPublicId) || thmPublicId;
-          configDirty = true;
-        }
-      }
+      thm = mergeThmStats(thm, badge);
     }
 
+    const thmProfileHash = secret("THM_PROFILE_HASH") ?? config.tryhackme?.profileHash;
     if (thmProfileHash) {
       const rooms = await fetchThmCompletedRooms(thmProfileHash);
-      if (rooms) {
-        thm = { ...thm, ...rooms };
-        if (!config.tryhackme.profileHash) {
-          config.tryhackme.profileHash = thmProfileHash;
-          configDirty = true;
-        }
+      thm = mergeThmStats(thm, rooms);
+      if (!config.tryhackme.profileHash) {
+        config.tryhackme.profileHash = thmProfileHash;
+        configDirty = true;
       }
     }
 
+    thm = applyThmStatsOverride(thm, config.tryhackme.statsOverride);
+
     platformStats.tryhackme = thm;
-    writeThmCard(config.tryhackme.username, thm);
+    writeThmCard(username, thm);
   }
 
   if (config.hackthebox?.enabled && config.hackthebox.username && !config.hackthebox.username.startsWith("YOUR_")) {

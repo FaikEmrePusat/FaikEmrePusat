@@ -10,5 +10,5 @@
   <rect x="0" y="0" width="4" height="150" rx="2" fill="#1a6b5c"/>
   <text x="22" y="32" fill="#1a6b5c" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="600">TryHackMe</text>
   <text x="22" y="72" fill="#ffffff" font-family="Segoe UI,system-ui,sans-serif" font-size="24" font-weight="700">FPusat</text>
-  <text x="22" y="104" fill="#1a6b5c" opacity="0.85" font-family="Segoe UI,system-ui,sans-serif" font-size="10" font-weight="600">Status</text><text x="22" y="122" fill="#e2e8f0" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="600">Scrape blocked</text>
+  <text x="22" y="104" fill="#1a6b5c" opacity="0.85" font-family="Segoe UI,system-ui,sans-serif" font-size="10" font-weight="600">Status</text><text x="22" y="122" fill="#e2e8f0" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="600">API blocked — set statsOverride</text>
 </svg>

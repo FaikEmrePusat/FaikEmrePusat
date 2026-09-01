@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** @deprecated Use update-profile-stats.mjs (custom SVG cards). Kept for manual fallback only. */
+/** @deprecated Use update-profile-stats.mjs (custom SVG cards). Requires THM_USER_PUBLIC_ID — no longer needed for profile cards. */
 import { existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

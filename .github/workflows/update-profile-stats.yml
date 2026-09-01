@@ -49,7 +49,6 @@ jobs:
       - name: Fetch platform stats
         env:
           HTB_APP_TOKEN: ${{ secrets.HTB_APP_TOKEN }}
-          THM_USER_PUBLIC_ID: ${{ secrets.THM_USER_PUBLIC_ID }}
           THM_PROFILE_HASH: ${{ secrets.THM_PROFILE_HASH }}
         run: node scripts/update-profile-stats.mjs
 

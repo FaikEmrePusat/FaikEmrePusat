@@ -14,21 +14,26 @@ Bu depo (`FaikEmrePusat/FaikEmrePusat`) GitHub profil README'nizi ve otomatik g�
 
 ### TryHackMe
 
-| Alan | Nereden bulunur |
+| Field | Where to find it |
 | :--- | :--- |
-| `username` | `https://tryhackme.com/p/KULLANICI` |
-| `userPublicId` | Profil → Embed badge → iframe URL'sindeki `userPublicId=` değeri |
+| `username` | `https://tryhackme.com/p/YOUR_USERNAME` |
+| `statsOverride` | Optional manual fallback — copy rank, rooms, level, streak from your THM dashboard |
 
 ```json
 "tryhackme": {
   "enabled": true,
-  "username": "ornek",
-  "userPublicId": 1234567,
-  "profileUrl": "https://tryhackme.com/p/ornek"
+  "username": "example",
+  "profileUrl": "https://tryhackme.com/p/example",
+  "statsOverride": {
+    "rank": null,
+    "rooms": null,
+    "level": null,
+    "streak": null
+  }
 }
 ```
 
-**Not:** TryHackMe rozet API'si bazen bot koruması (Vercel checkpoint) nedeniyle CI'da yanıt vermeyebilir. Bu durumda profil linki ve kalkan rozeti yine görünür; tablo istatistikleri için `userPublicId` gerekir.
+**Note:** TryHackMe blocks many automated requests (Vercel checkpoint / HTTP 429) from CI runners. The script tries username-based APIs first; if all fail, fill `statsOverride` once from your dashboard. No `userPublicId` is required.
 
 ### Hack The Box
 

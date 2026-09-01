@@ -3,9 +3,13 @@
   "tryhackme": {
     "enabled": true,
     "username": "FPusat",
-    "userPublicId": null,
-    "profileHash": null,
-    "profileUrl": "https://tryhackme.com/p/FPusat"
+    "profileUrl": "https://tryhackme.com/p/FPusat",
+    "statsOverride": {
+      "rank": null,
+      "rooms": null,
+      "level": null,
+      "streak": null
+    }
   },
   "hackthebox": {
     "enabled": true,

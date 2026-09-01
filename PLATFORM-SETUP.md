@@ -32,29 +32,58 @@ Your numeric `userId` is saved automatically after the first successful run (or 
 
 ## TryHackMe
 
-**Without secrets:** the script tries to scrape https://tryhackme.com/p/YOUR_USERNAME. TryHackMe often blocks automated requests (Vercel Security Checkpoint / HTTP 429). When blocked, the card still renders with your username and a *Scrape blocked* status.
+**Only your username is required.** Set it in `config/platforms.json`:
 
-**Optional fallbacks** (when scrape is blocked):
+```json
+"tryhackme": {
+  "enabled": true,
+  "username": "FPusat",
+  "profileUrl": "https://tryhackme.com/p/FPusat",
+  "statsOverride": {
+    "rank": null,
+    "rooms": null,
+    "level": null,
+    "streak": null
+  }
+}
+```
 
-| Secret / config field | Purpose |
-| :--- | :--- |
-| `THM_USER_PUBLIC_ID` (secret or `config/platforms.json`) | Badge iframe API — rank, rooms, level, streak |
-| `THM_PROFILE_HASH` (secret or `config/platforms.json`) | Completed-rooms API — room count + recent list in the stats table |
+The script fetches stats automatically using these **username-based** sources (in order):
 
-### Get `userPublicId` (one-time)
+1. `https://tryhackme.com/api/v2/public-profile?username=YOUR_USERNAME` — rank, rooms, level
+2. Legacy APIs: `/api/user/rank/USERNAME` and `/api/no-completed-rooms-public/USERNAME`
+3. Public profile page HTML (`/p/USERNAME`) including embedded `__NEXT_DATA__`
 
-1. Log in at https://tryhackme.com
-2. Open your profile → **Share profile** / **Embed badge**
-3. Copy the iframe URL — it contains `userPublicId=1234567`
-4. GitHub secret: **`THM_USER_PUBLIC_ID`** = that number, or add `"userPublicId": 1234567` to `config/platforms.json`
+You do **not** need to hunt for `userPublicId`, embed-badge iframes, or DevTools network filters. Those IDs are not shown in the current TryHackMe UI.
 
-**Alternative:** browser DevTools → Network → filter `userPublicId` on the profile page.
+### When GitHub Actions is blocked (HTTP 429)
 
-### Optional — recent rooms in the stats table
+TryHackMe sits behind Vercel bot protection. Datacenter IPs (including GitHub Actions runners) are often challenged, so live API calls may fail even though your profile is public in a browser.
 
-GitHub secret: **`THM_PROFILE_HASH`** (24-char hash from `completed-rooms?user=` in the Network tab)
+**Fallback — paste stats once from your THM dashboard:**
 
-## After adding secrets
+1. Open https://tryhackme.com while logged in
+2. Note your **global rank**, **completed rooms**, **level** (e.g. `[0x5]`), and **streak** from the dashboard
+3. Fill `statsOverride` in `config/platforms.json`:
+
+```json
+"statsOverride": {
+  "rank": 123456,
+  "rooms": 42,
+  "level": "[0x5]",
+  "streak": "7 days"
+}
+```
+
+4. Push — the SVG card and README table render these values until the API works again.
+
+Update the numbers whenever you want the card to reflect new progress (monthly is fine).
+
+### Optional — recent rooms list
+
+If you want a collapsible “Recent TryHackMe rooms” section in the README, add a GitHub secret **`THM_PROFILE_HASH`** (24-char hash from `completed-rooms?user=` in DevTools while viewing your own profile). This is optional and unrelated to `userPublicId`.
+
+## After adding secrets or config
 
 Run **Actions → Update profile stats → Run workflow** once, then rely on the daily schedule.
 
