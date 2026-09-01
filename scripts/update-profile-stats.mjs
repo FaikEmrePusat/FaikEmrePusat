@@ -20,8 +20,8 @@ const PWN_SVG = resolve(ASSETS_DIR, "platform-pwn.svg");
 
 const UA =
   "FaikEmrePusat-profile-stats/3.0 (+https://github.com/FaikEmrePusat/FaikEmrePusat)";
-const CARD_W = 320;
-const CARD_H = 200;
+const CARD_W = 270;
+const CARD_H = 130;
 
 function loadConfig() {
   return JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
@@ -165,32 +165,47 @@ function hasHtbDisplayStats(stats) {
   );
 }
 
+function isHtbEmpty(stats) {
+  const userOwns = Number(stats?.userOwns ?? 0);
+  const systemOwns = Number(stats?.systemOwns ?? 0);
+  const points = Number(stats?.points ?? 0);
+  const ranking = stats?.ranking;
+  const respects = Number(stats?.respects ?? 0);
+  return (
+    userOwns === 0 &&
+    systemOwns === 0 &&
+    points === 0 &&
+    respects === 0 &&
+    (ranking == null || ranking === 0)
+  );
+}
+
 function hasPwnDisplayStats(stats) {
   return stats?.ranked || stats?.rank != null || stats?.points != null || stats?.solves != null;
 }
 
 function writePlatformCard({ id, platform, username, accent, gradient, cells, status, outPath }) {
-  const pad = 20;
+  const pad = 14;
   const colW = (CARD_W - pad * 2 - 8) / 2;
-  const rows = [100, 138, 176];
+  const rows = [78, 106];
   const col1X = pad + 4;
   const col2X = pad + 4 + colW + 8;
 
   let statSvg = "";
   if (status) {
-    statSvg = `<text x="${col1X}" y="${rows[0]}" fill="${accent}" opacity="0.8" font-family="Segoe UI,system-ui,sans-serif" font-size="10" font-weight="600" letter-spacing="0.04em">STATUS</text>`;
-    statSvg += `<text x="${col1X}" y="${rows[0] + 18}" fill="#e2e8f0" font-family="Segoe UI,system-ui,sans-serif" font-size="13" font-weight="600">${escapeXml(status)}</text>`;
+    statSvg = `<text x="${col1X}" y="${rows[0]}" fill="${accent}" opacity="0.8" font-family="Segoe UI,system-ui,sans-serif" font-size="9" font-weight="600" letter-spacing="0.04em">STATUS</text>`;
+    statSvg += `<text x="${col1X}" y="${rows[0] + 16}" fill="#e2e8f0" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">${escapeXml(status)}</text>`;
   } else {
     const positions = [];
     for (const y of rows) {
       positions.push([col1X, y], [col2X, y]);
     }
     const visible = cells.filter((c) => c && (c.always || (c.value != null && c.value !== "—")));
-    for (let i = 0; i < Math.min(visible.length, 6); i++) {
+    for (let i = 0; i < Math.min(visible.length, 4); i++) {
       const [x, y] = positions[i];
       const cell = visible[i];
-      statSvg += `<text x="${x}" y="${y}" fill="${accent}" opacity="0.8" font-family="Segoe UI,system-ui,sans-serif" font-size="10" font-weight="600" letter-spacing="0.04em">${escapeXml(cell.label.toUpperCase())}</text>`;
-      statSvg += `<text x="${x}" y="${y + 18}" fill="#f1f5f9" font-family="Segoe UI,system-ui,sans-serif" font-size="14" font-weight="600">${escapeXml(cell.value)}</text>`;
+      statSvg += `<text x="${x}" y="${y}" fill="${accent}" opacity="0.8" font-family="Segoe UI,system-ui,sans-serif" font-size="9" font-weight="600" letter-spacing="0.04em">${escapeXml(cell.label.toUpperCase())}</text>`;
+      statSvg += `<text x="${x}" y="${y + 15}" fill="#f1f5f9" font-family="Segoe UI,system-ui,sans-serif" font-size="12" font-weight="600">${escapeXml(cell.value)}</text>`;
     }
   }
 
@@ -206,11 +221,11 @@ function writePlatformCard({ id, platform, username, accent, gradient, cells, st
       <stop offset="100%" stop-color="${accent}" stop-opacity="0.55"/>
     </linearGradient>
   </defs>
-  <rect width="${CARD_W}" height="${CARD_H}" rx="14" fill="url(#bg-${id})"/>
-  <rect x="0" y="0" width="5" height="${CARD_H}" rx="3" fill="url(#accent-${id})"/>
-  <rect x="${pad}" y="44" width="${CARD_W - pad * 2}" height="1" fill="#ffffff" opacity="0.08"/>
-  <text x="${pad + 4}" y="28" fill="${accent}" font-family="Segoe UI,system-ui,sans-serif" font-size="11" font-weight="700" letter-spacing="0.06em">${escapeXml(platform.toUpperCase())}</text>
-  <text x="${pad + 4}" y="68" fill="#ffffff" font-family="Segoe UI,system-ui,sans-serif" font-size="22" font-weight="700">${escapeXml(username)}</text>
+  <rect width="${CARD_W}" height="${CARD_H}" rx="12" fill="url(#bg-${id})"/>
+  <rect x="0" y="0" width="4" height="${CARD_H}" rx="2" fill="url(#accent-${id})"/>
+  <rect x="${pad}" y="56" width="${CARD_W - pad * 2}" height="1" fill="#ffffff" opacity="0.08"/>
+  <text x="${pad + 4}" y="22" fill="${accent}" font-family="Segoe UI,system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="0.06em">${escapeXml(platform.toUpperCase())}</text>
+  <text x="${pad + 4}" y="46" fill="#ffffff" font-family="Segoe UI,system-ui,sans-serif" font-size="17" font-weight="700">${escapeXml(username)}</text>
   ${statSvg}
 </svg>
 `;
@@ -262,6 +277,19 @@ function writeHtbCard(username, stats) {
     });
     return;
   }
+  if (isHtbEmpty(stats)) {
+    const tier = stats?.rank || "Noob";
+    writePlatformCard({
+      id: "htb",
+      platform: "Hack The Box",
+      username,
+      accent: "#9fef00",
+      gradient: ["#1a2e14", "#0a1408"],
+      status: `Just started · ${tier} tier`,
+      outPath: HTB_SVG,
+    });
+    return;
+  }
   writePlatformCard({
     id: "htb",
     platform: "Hack The Box",
@@ -271,10 +299,26 @@ function writeHtbCard(username, stats) {
     cells: [
       { label: "Global rank", value: fmtRank(stats?.ranking), always: true },
       { label: "Tier", value: stats?.rank || "—", always: true },
-      { label: "User owns", value: stats?.userOwns != null ? String(stats.userOwns) : "—", always: true },
-      { label: "Root owns", value: stats?.systemOwns != null ? String(stats.systemOwns) : "—", always: true },
-      { label: "Points", value: stats?.points != null ? `${stats.points} pts` : "—", always: true },
-      { label: "Respects", value: stats?.respects != null ? String(stats.respects) : "—" },
+      {
+        label: "User owns",
+        value: stats?.userOwns != null ? String(stats.userOwns) : "—",
+        always: stats?.userOwns != null && stats.userOwns > 0,
+      },
+      {
+        label: "Root owns",
+        value: stats?.systemOwns != null ? String(stats.systemOwns) : "—",
+        always: stats?.systemOwns != null && stats.systemOwns > 0,
+      },
+      {
+        label: "Points",
+        value: stats?.points != null ? `${stats.points} pts` : "—",
+        always: stats?.points != null && stats.points > 0,
+      },
+      {
+        label: "Respects",
+        value: stats?.respects != null ? String(stats.respects) : "—",
+        always: stats?.respects != null && stats.respects > 0,
+      },
     ],
     outPath: HTB_SVG,
   });
@@ -574,78 +618,38 @@ async function fetchHtbStats(token) {
   };
 }
 
+function platformCardImg(profileUrl, svgPath, alt, width = CARD_W) {
+  return `<a href="${profileUrl}"><img src="${svgPath}" alt="${alt}" width="${width}"/></a>`;
+}
+
 function platformSection(config, platformStats) {
   const lines = [];
   const thm = config.tryhackme;
   const htb = config.hackthebox;
   const pwn = config.pwncollege;
   const ts = platformStats.tryhackme ?? {};
-  const hs = platformStats.hackthebox ?? {};
-  const ps = platformStats.pwncollege ?? {};
-  const thmHasStats = ts.rooms != null || ts.total != null || ts.rank != null || ts.level;
 
   lines.push("## Platform Progress", "");
-  lines.push("*Custom lab cards — stats refresh daily via static scrape.*", "");
+  lines.push("*Lab platforms — auto-updated daily.*", "");
 
-  const cards = [];
+  const cardCells = [];
   if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_") && existsSync(THM_SVG)) {
-    cards.push(
-      `<a href="${thm.profileUrl}"><img src="./assets/platform-thm.svg" alt="TryHackMe stats" height="200"/></a>`,
-    );
+    cardCells.push(platformCardImg(thm.profileUrl, "./assets/platform-thm.svg", "TryHackMe stats"));
   }
   if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_") && existsSync(HTB_SVG)) {
-    cards.push(
-      `<a href="${htb.profileUrl}"><img src="./assets/platform-htb.svg" alt="Hack The Box stats" height="200"/></a>`,
-    );
+    cardCells.push(platformCardImg(htb.profileUrl, "./assets/platform-htb.svg", "Hack The Box stats"));
   }
   if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_") && existsSync(PWN_SVG)) {
-    cards.push(
-      `<a href="${pwn.profileUrl}"><img src="./assets/platform-pwn.svg" alt="pwn.college stats" height="200"/></a>`,
-    );
-  }
-  if (cards.length) {
-    lines.push("<p align=\"center\">", cards.join("\n&nbsp;&nbsp;\n"), "</p>", "");
+    cardCells.push(platformCardImg(pwn.profileUrl, "./assets/platform-pwn.svg", "pwn.college stats"));
   }
 
-  lines.push(
-    "| Platform | Progress | Global rank | Tier / level | Points | Extra |",
-    "| :--- | :--- | ---: | :--- | ---: | :--- |",
-  );
-
-  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
-    const completed = ts.rooms ?? ts.total ?? "—";
-    const rank = ts.rank != null ? fmtRank(ts.rank) : "—";
-    const level = ts.level || "—";
-    const streak = ts.streak || "—";
-    lines.push(
-      `| [TryHackMe](${thm.profileUrl}) | ${completed} rooms | ${rank} | ${level} | — | ${streak} streak |`,
-    );
+  if (cardCells.length) {
+    lines.push('<table align="center"><tr>');
+    for (const cell of cardCells) {
+      lines.push(`<td valign="top" align="center">${cell}</td>`);
+    }
+    lines.push("</tr></table>", "");
   }
-
-  if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
-    const progress =
-      hs.userOwns != null || hs.systemOwns != null
-        ? `${hs.userOwns ?? 0} user · ${hs.systemOwns ?? 0} root`
-        : "—";
-    const rank = hs.ranking != null ? fmtRank(hs.ranking) : "—";
-    const tier = hs.rank || "—";
-    const points = hs.points != null ? `${hs.points} pts` : "—";
-    const extra = hs.respects != null ? `${hs.respects} respects` : "—";
-    lines.push(
-      `| [Hack The Box](${htb.profileUrl}) | ${progress} | ${rank} | ${tier} | ${points} | ${extra} |`,
-    );
-  }
-
-  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
-    const ranked = ps.ranked || ps.rank != null;
-    const rank = ranked ? fmtRank(ps.rank) : "—";
-    const pts = ps.points != null ? `${ps.points} pts` : "—";
-    const solves = ps.solves != null ? `${ps.solves} solves` : "—";
-    const extra = ps.percentile != null ? `top ${ps.percentile}%` : "—";
-    lines.push(`| [pwn.college](${pwn.profileUrl}) | ${solves} | ${rank} | — | ${pts} | ${extra} |`);
-  }
-
-  lines.push("");
 
   if (ts.recent?.length) {
     lines.push("<details><summary><b>Recent TryHackMe rooms</b></summary>", "");
@@ -669,7 +673,7 @@ const DIM_EN = {
 
 function durumSection(config, profileStats) {
   const lines = [];
-  lines.push("## Durum Dashboard", "");
+  lines.push("## SOC Ledger Dashboard", "");
   const updated = profileStats?.exportedAt
     ? new Date(profileStats.exportedAt).toLocaleDateString("en-US", {
         year: "numeric",

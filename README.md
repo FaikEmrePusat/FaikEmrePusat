@@ -31,27 +31,19 @@ I am preparing for **Junior SOC Analyst / Incident Responder** positions in Germ
 <!-- AUTO:PLATFORMS -->
 ## Platform Progress
 
-*Custom lab cards — stats refresh daily via static scrape.*
+*Lab platforms — auto-updated daily.*
 
-<p align="center">
-<a href="https://tryhackme.com/p/FPusat"><img src="./assets/platform-thm.svg" alt="TryHackMe stats" height="200"/></a>
-&nbsp;&nbsp;
-<a href="https://app.hackthebox.com/profile/FEPusa7"><img src="./assets/platform-htb.svg" alt="Hack The Box stats" height="200"/></a>
-&nbsp;&nbsp;
-<a href="https://pwn.college/hacker/Pusat"><img src="./assets/platform-pwn.svg" alt="pwn.college stats" height="200"/></a>
-</p>
-
-| Platform | Progress | Global rank | Tier / level | Points | Extra |
-| :--- | :--- | ---: | :--- | ---: | :--- |
-| [TryHackMe](https://tryhackme.com/p/FPusat) | 85 rooms | #136,140 | [0x9][MAGE] | — | 103 days streak |
-| [Hack The Box](https://app.hackthebox.com/profile/FEPusa7) | 0 user · 0 root | — | Noob | 0 pts | 0 respects |
-| [pwn.college](https://pwn.college/hacker/Pusat) | — | #17,800 | — | 129 pts | — |
+<table align="center"><tr>
+<td valign="top" align="center"><a href="https://tryhackme.com/p/FPusat"><img src="./assets/platform-thm.svg" alt="TryHackMe stats" width="270"/></a></td>
+<td valign="top" align="center"><a href="https://app.hackthebox.com/profile/FEPusa7"><img src="./assets/platform-htb.svg" alt="Hack The Box stats" width="270"/></a></td>
+<td valign="top" align="center"><a href="https://pwn.college/hacker/Pusat"><img src="./assets/platform-pwn.svg" alt="pwn.college stats" width="270"/></a></td>
+</tr></table>
 <!-- /AUTO:PLATFORMS -->
 
 ---
 
 <!-- AUTO:DURUM -->
-## Durum Dashboard
+## SOC Ledger Dashboard
 
 Model **2.1** · Updated Sep 1, 2026
 
@@ -88,7 +80,7 @@ No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional
 
 ---
 
-## 📊 System I Built: Durum-Web (Model 2.1)
+## 📊 System I Built: SOC Ledger (durum-web, Model 2.1)
 The open-source cybersecurity competency tracking system I developed and use daily:
 
 - 🧠 **FSRS Spaced Repetition:** Memory stability engine optimized for the forgetting curve.
