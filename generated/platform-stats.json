@@ -1,12 +1,19 @@
 {
-  "fetchedAt": "2026-09-01T13:45:01.800Z",
+  "fetchedAt": "2026-09-01T13:46:24.637Z",
   "tryhackme": {
     "source": "scrape-blocked",
     "blocked": true
   },
   "hackthebox": {
     "userId": 514589,
-    "source": "config-only"
+    "name": "FEPusa7",
+    "rank": "Noob",
+    "ranking": null,
+    "userOwns": 0,
+    "systemOwns": 0,
+    "points": 0,
+    "respects": 0,
+    "source": "htb-api"
   },
   "pwncollege": {
     "ranked": true,
