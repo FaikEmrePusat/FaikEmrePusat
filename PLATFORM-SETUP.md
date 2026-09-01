@@ -56,6 +56,8 @@ The script fetches stats automatically using these **username-based** sources (i
 
 You do **not** need to hunt for `userPublicId`, embed-badge iframes, or DevTools network filters. Those IDs are not shown in the current TryHackMe UI.
 
+**Ignore `data-dpl-id` on `<html>`** — it is TryHackMe’s Vercel/Next.js deployment ID (same for every visitor), not your username or profile stats key.
+
 ### When GitHub Actions is blocked (HTTP 429)
 
 TryHackMe sits behind Vercel bot protection. Datacenter IPs (including GitHub Actions runners) are often challenged, so live API calls may fail even though your profile is public in a browser.
