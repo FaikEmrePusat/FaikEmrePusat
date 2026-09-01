@@ -17,7 +17,11 @@ Your numeric `userId` is saved automatically after the first run (or set in `con
 
 **If a token was exposed** (e.g. pasted in chat), revoke it in HTB **Settings → App Token**, create a new one, and update the `HTB_APP_TOKEN` GitHub secret.
 
-## TryHackMe (optional, for live badge + room count)
+## TryHackMe
+
+**Default:** A Shields.io profile button is generated automatically (no secret required).
+
+### Optional — live stats (room count, rank, badge PNG)
 
 ### Option A — profile hash (completed rooms + recent activity)
 

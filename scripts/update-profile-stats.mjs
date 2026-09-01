@@ -154,6 +154,13 @@ async function fetchHtbStats(token) {
   };
 }
 
+function shieldBadge({ label, message, color, logo, url }) {
+  const enc = (s) => encodeURIComponent(s).replace(/%20/g, "%20");
+  const logoPart = logo ? `&logo=${logo}${logo === "hackthebox" ? "&logoColor=black" : "&logoColor=white"}` : "";
+  const src = `https://img.shields.io/badge/${enc(label)}-${enc(message)}-${color}?style=for-the-badge${logoPart}`;
+  return `<a href="${url}"><img src="${src}" alt="${label} profile"/></a>`;
+}
+
 function platformSection(config, platformStats) {
   const lines = [];
   const thm = config.tryhackme;
@@ -163,29 +170,65 @@ function platformSection(config, platformStats) {
   const hs = platformStats.hackthebox ?? {};
   const ps = platformStats.pwncollege ?? {};
   const htbUserId = hs.userId ?? htb.userId;
+  const thmHasStats = ts.rooms != null || ts.total != null || ts.rank != null || ts.level;
 
   lines.push("## Platform Progress", "");
 
-  const badgeCells = [];
+  const shieldCells = [];
   if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
-    if (existsSync(THM_BADGE)) {
-      badgeCells.push(
-        `<a href="${thm.profileUrl}"><img src="./assets/thm-badge.png" alt="TryHackMe live badge" height="150"/></a>`,
-      );
-    }
+    shieldCells.push(
+      shieldBadge({
+        label: "TryHackMe",
+        message: thm.username,
+        color: "212C42",
+        logo: "tryhackme",
+        url: thm.profileUrl,
+      }),
+    );
+  }
+  if (htb.enabled && htb.username && !htb.username.startsWith("YOUR_")) {
+    shieldCells.push(
+      shieldBadge({
+        label: "Hack The Box",
+        message: htb.username,
+        color: "9FEF00",
+        logo: "hackthebox",
+        url: htb.profileUrl,
+      }),
+    );
+  }
+  if (pwn.enabled && pwn.username && !pwn.username.startsWith("YOUR_")) {
+    shieldCells.push(
+      shieldBadge({
+        label: "pwn.college",
+        message: pwn.username,
+        color: "5c2d91",
+        url: pwn.profileUrl,
+      }),
+    );
+  }
+  if (shieldCells.length) {
+    lines.push("<p align=\"center\">", shieldCells.join("\n&nbsp;&nbsp;\n"), "</p>", "");
+  }
+
+  const liveBadges = [];
+  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_") && existsSync(THM_BADGE)) {
+    liveBadges.push(
+      `<a href="${thm.profileUrl}"><img src="./assets/thm-badge.png" alt="TryHackMe live badge" height="150"/></a>`,
+    );
   }
   if (htb.enabled && htbUserId) {
-    badgeCells.push(
+    liveBadges.push(
       `<a href="${htb.profileUrl}"><img src="https://www.hackthebox.eu/badge/image/${htbUserId}" alt="Hack The Box live badge" height="150"/></a>`,
     );
   }
-  if (badgeCells.length) {
-    lines.push("<p align=\"center\">", badgeCells.join("\n&nbsp;&nbsp;\n"), "</p>", "");
+  if (liveBadges.length) {
+    lines.push("<p align=\"center\">", liveBadges.join("\n&nbsp;&nbsp;\n"), "</p>", "");
   }
 
   lines.push("| Platform | Completed | Global rank | Level / points |", "| :--- | ---: | ---: | :--- |");
 
-  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_")) {
+  if (thm.enabled && thm.username && !thm.username.startsWith("YOUR_") && thmHasStats) {
     const completed = ts.rooms ?? ts.total ?? "—";
     const rank = ts.rank != null ? `#${Number(ts.rank).toLocaleString("en-US")}` : "—";
     const extra = [ts.level, ts.streak].filter(Boolean).join(" · ") || "—";
