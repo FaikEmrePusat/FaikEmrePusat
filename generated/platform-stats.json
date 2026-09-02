@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-01T18:10:35.112Z",
+  "fetchedAt": "2026-09-02T10:54:51.631Z",
   "tryhackme": {
     "source": "scrape-blocked+override",
     "rank": 136140,
@@ -9,11 +9,14 @@
   },
   "hackthebox": {
     "userId": 514589,
-    "source": "config-only+override",
+    "name": "FEPusa7",
+    "rank": "Noob",
+    "ranking": null,
     "userOwns": 0,
     "systemOwns": 0,
-    "rank": "Noob",
-    "points": 0
+    "points": 0,
+    "respects": 0,
+    "source": "htb-api+override"
   },
   "pwncollege": {
     "ranked": true,
