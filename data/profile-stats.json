@@ -1,7 +1,7 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 19.6,
+  "R": 19.4,
   "band": "Foundation setup",
   "boyutlar": [
     {
@@ -33,7 +33,7 @@
     {
       "id": "net",
       "kisa": "Net",
-      "v": 3.4
+      "v": 3.3
     },
     {
       "id": "linux",
@@ -48,17 +48,17 @@
     {
       "id": "secfund",
       "kisa": "SecFund",
-      "v": 3.4
+      "v": 3.3
     },
     {
       "id": "crypto",
       "kisa": "Crypto",
-      "v": 3.4
+      "v": 3.3
     },
     {
       "id": "netsec",
       "kisa": "NetSec",
-      "v": 3.4
+      "v": 3.3
     },
     {
       "id": "siem",
@@ -73,17 +73,17 @@
     {
       "id": "off",
       "kisa": "Off",
-      "v": 1.4
+      "v": 1.3
     },
     {
       "id": "py",
       "kisa": "Python",
-      "v": 3.4
+      "v": 3.3
     },
     {
       "id": "cloud",
       "kisa": "Cloud",
-      "v": 1.4
+      "v": 1.3
     },
     {
       "id": "port",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 47.8
+      "pi": 46.5
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 48.6
+      "pi": 47.2
     },
     {
       "id": "C",
@@ -126,7 +126,7 @@
       "id": "E",
       "name": "Gate E — Intensive interviews",
       "open": false,
-      "pi": 12.3
+      "pi": 12.2
     },
     {
       "id": "F",
