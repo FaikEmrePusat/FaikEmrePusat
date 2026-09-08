@@ -1,13 +1,13 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 19.4,
+  "R": 19.2,
   "band": "Foundation setup",
   "boyutlar": [
     {
       "key": "T",
       "ad": "Technical",
-      "v": 2.6,
+      "v": 2.5,
       "hedef": 5.8
     },
     {
@@ -33,42 +33,42 @@
     {
       "id": "net",
       "kisa": "Net",
-      "v": 3.3
+      "v": 3.2
     },
     {
       "id": "linux",
       "kisa": "Linux",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "win",
       "kisa": "Win/AD",
-      "v": 2
+      "v": 1.9
     },
     {
       "id": "secfund",
       "kisa": "SecFund",
-      "v": 3.3
+      "v": 3.2
     },
     {
       "id": "crypto",
       "kisa": "Crypto",
-      "v": 3.3
+      "v": 3.2
     },
     {
       "id": "netsec",
       "kisa": "NetSec",
-      "v": 3.3
+      "v": 3.2
     },
     {
       "id": "siem",
       "kisa": "SIEM",
-      "v": 2
+      "v": 1.9
     },
     {
       "id": "def",
       "kisa": "Def/SOC",
-      "v": 2
+      "v": 1.9
     },
     {
       "id": "off",
@@ -78,7 +78,7 @@
     {
       "id": "py",
       "kisa": "Python",
-      "v": 3.3
+      "v": 3.2
     },
     {
       "id": "cloud",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 46.5
+      "pi": 45.5
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 47.2
+      "pi": 46.2
     },
     {
       "id": "C",
@@ -120,7 +120,7 @@
       "id": "D",
       "name": "Gate D — Application threshold",
       "open": false,
-      "pi": 24.5
+      "pi": 24.4
     },
     {
       "id": "E",
