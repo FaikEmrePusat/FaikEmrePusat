@@ -1,13 +1,13 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 18.9,
+  "R": 18.7,
   "band": "Foundation setup",
   "boyutlar": [
     {
       "key": "T",
       "ad": "Technical",
-      "v": 2.4,
+      "v": 2.3,
       "hedef": 5.8
     },
     {
@@ -38,12 +38,12 @@
     {
       "id": "linux",
       "kisa": "Linux",
-      "v": 2.5
+      "v": 2.4
     },
     {
       "id": "win",
       "kisa": "Win/AD",
-      "v": 1.9
+      "v": 1.8
     },
     {
       "id": "secfund",
@@ -63,12 +63,12 @@
     {
       "id": "siem",
       "kisa": "SIEM",
-      "v": 1.9
+      "v": 1.8
     },
     {
       "id": "def",
       "kisa": "Def/SOC",
-      "v": 1.9
+      "v": 1.8
     },
     {
       "id": "off",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 43.6
+      "pi": 42.7
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 44.3
+      "pi": 43.4
     },
     {
       "id": "C",
@@ -120,7 +120,7 @@
       "id": "D",
       "name": "Gate D — Application threshold",
       "open": false,
-      "pi": 24.3
+      "pi": 24.2
     },
     {
       "id": "E",
