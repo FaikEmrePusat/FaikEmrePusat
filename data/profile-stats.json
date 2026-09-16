@@ -1,7 +1,7 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 18.3,
+  "R": 18.2,
   "band": "Foundation setup",
   "boyutlar": [
     {
@@ -33,7 +33,7 @@
     {
       "id": "net",
       "kisa": "Net",
-      "v": 2.9
+      "v": 2.8
     },
     {
       "id": "linux",
@@ -48,17 +48,17 @@
     {
       "id": "secfund",
       "kisa": "SecFund",
-      "v": 2.9
+      "v": 2.8
     },
     {
       "id": "crypto",
       "kisa": "Crypto",
-      "v": 2.9
+      "v": 2.8
     },
     {
       "id": "netsec",
       "kisa": "NetSec",
-      "v": 2.9
+      "v": 2.8
     },
     {
       "id": "siem",
@@ -78,7 +78,7 @@
     {
       "id": "py",
       "kisa": "Python",
-      "v": 2.9
+      "v": 2.8
     },
     {
       "id": "cloud",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 40.2
+      "pi": 39.7
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 40.8
+      "pi": 40.3
     },
     {
       "id": "C",
