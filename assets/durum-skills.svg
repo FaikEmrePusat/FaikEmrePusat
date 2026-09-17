@@ -24,8 +24,8 @@
 <text x="456" y="196" fill="#6a7d8a" font-size="11" text-anchor="end">2.8</text>
 <text x="24" y="230" fill="#14212b" font-size="12" font-weight="600">Linux</text>
 <rect x="140" y="218" width="300" height="16" rx="8" fill="#e8eef0"/>
-<rect x="140" y="218" width="69" height="16" rx="8" fill="#1a6b5c"/>
-<text x="456" y="230" fill="#6a7d8a" font-size="11" text-anchor="end">2.3</text>
+<rect x="140" y="218" width="66.00000000000001" height="16" rx="8" fill="#1a6b5c"/>
+<text x="456" y="230" fill="#6a7d8a" font-size="11" text-anchor="end">2.2</text>
 <text x="24" y="264" fill="#14212b" font-size="12" font-weight="600">Win/AD</text>
 <rect x="140" y="252" width="300" height="16" rx="8" fill="#e8eef0"/>
 <rect x="140" y="252" width="50.99999999999999" height="16" rx="8" fill="#1a6b5c"/>

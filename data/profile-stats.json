@@ -1,7 +1,7 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 18.2,
+  "R": 18.1,
   "band": "Foundation setup",
   "boyutlar": [
     {
@@ -38,7 +38,7 @@
     {
       "id": "linux",
       "kisa": "Linux",
-      "v": 2.3
+      "v": 2.2
     },
     {
       "id": "win",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 39.7
+      "pi": 39.2
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 40.3
+      "pi": 39.9
     },
     {
       "id": "C",
