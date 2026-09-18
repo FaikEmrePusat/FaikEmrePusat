@@ -23,11 +23,11 @@ Model **2.1** · Updated Sep 1, 2026
 
 | Dimension | Score | Target |
 | :--- | ---: | ---: |
-| Technical (T) | 2.2 | 5.8 |
+| Technical (T) | 2.1 | 5.8 |
 | Production (P) | 1 | 6.6 |
 | Language (L) | 2.6 | 7.5 |
 | Career (C) | 2 | 9 |
 
-**R:** 18.1 (Foundation setup) · **Streak:** 0 days · **Last 7 days:** 0 h
+**R:** 18 (Foundation setup) · **Streak:** 0 days · **Last 7 days:** 0 h
 
 No gates open yet · next 0 %25 · bottleneck: Unknown — ETA conditional
