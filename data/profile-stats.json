@@ -7,7 +7,7 @@
     {
       "key": "T",
       "ad": "Technical",
-      "v": 2.1,
+      "v": 2,
       "hedef": 5.8
     },
     {
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 37.3
+      "pi": 37.1
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 37.9
+      "pi": 37.7
     },
     {
       "id": "C",
@@ -120,7 +120,7 @@
       "id": "D",
       "name": "Gate D — Application threshold",
       "open": false,
-      "pi": 23.9
+      "pi": 23.8
     },
     {
       "id": "E",

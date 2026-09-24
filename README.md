@@ -68,7 +68,7 @@ Model **2.1** · Updated Sep 1, 2026
 
 | Dimension | Score | Target |
 | :--- | ---: | ---: |
-| Technical (T) | 2.1 | 5.8 |
+| Technical (T) | 2 | 5.8 |
 | Production (P) | 1 | 6.6 |
 | Language (L) | 2.6 | 7.5 |
 | Career (C) | 2 | 9 |
