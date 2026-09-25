@@ -33,7 +33,7 @@
     {
       "id": "net",
       "kisa": "Net",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "linux",
@@ -48,17 +48,17 @@
     {
       "id": "secfund",
       "kisa": "SecFund",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "crypto",
       "kisa": "Crypto",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "netsec",
       "kisa": "NetSec",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "siem",
@@ -78,7 +78,7 @@
     {
       "id": "py",
       "kisa": "Python",
-      "v": 2.7
+      "v": 2.6
     },
     {
       "id": "cloud",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 37.1
+      "pi": 36.9
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 37.7
+      "pi": 37.5
     },
     {
       "id": "C",
