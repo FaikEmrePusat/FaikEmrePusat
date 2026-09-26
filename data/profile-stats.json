@@ -1,7 +1,7 @@
 {
   "exportedAt": "2026-09-01T00:07:20.109Z",
   "model": "2.1",
-  "R": 17.7,
+  "R": 17.6,
   "band": "Foundation setup",
   "boyutlar": [
     {
@@ -73,7 +73,7 @@
     {
       "id": "off",
       "kisa": "Off",
-      "v": 1.1
+      "v": 1
     },
     {
       "id": "py",
@@ -83,7 +83,7 @@
     {
       "id": "cloud",
       "kisa": "Cloud",
-      "v": 1.1
+      "v": 1
     },
     {
       "id": "port",
@@ -102,13 +102,13 @@
       "id": "A",
       "name": "Gate A — Foundation baseline",
       "open": false,
-      "pi": 36.9
+      "pi": 36.7
     },
     {
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 37.5
+      "pi": 37.3
     },
     {
       "id": "C",
