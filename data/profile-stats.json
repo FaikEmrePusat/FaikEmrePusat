@@ -38,7 +38,7 @@
     {
       "id": "linux",
       "kisa": "Linux",
-      "v": 2.1
+      "v": 2
     },
     {
       "id": "win",
@@ -108,7 +108,7 @@
       "id": "B",
       "name": "Gate B — Defensive practice",
       "open": false,
-      "pi": 36.5
+      "pi": 36.4
     },
     {
       "id": "C",
